@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	 xmlns:p="http://www.springframework.org/schema/p"  
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<context:component-scan base-package="org.openmrs.module.bloodbank.web" />
+	
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>org.openmrs.module.bloodbank.BloodBankService</value>
+				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager"><ref bean="transactionManager"/></property>
+					<property name="target">
+							<bean class="org.openmrs.module.bloodbank.impl.BloodbankServiceImpl">
+								<property name="dao">
+									<bean class="org.openmrs.module.bloodbank.db.hibernate.HibernateBloodBankDAO">
+										<property name="sessionFactory"><ref bean="sessionFactory"/></property>	
+									</bean>
+								</property>
+							</bean>
+					</property>
+					<property name="preInterceptors">
+						<list>
+							<ref bean="authorizationInterceptor"/>
+						</list>
+					</property>
+					<property name="transactionAttributeSource">
+						<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+    
+	<!-- 
+    <bean id="bloodBankUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    	<property name="mappings">
+            <props>
+	           <prop key="module/bloodbank/main.form">BbmainForm</prop>
+	           <prop key="module/bloodbank/newIds.form">BbnewIds</prop>
+	           <prop key="module/bloodbank/patient/validateDonorId.form">BbValidateDonorIdForm</prop>
+	           <prop key="module/bloodbank/viewStock.form">BbViewStockForm</prop>
+	           <prop key="module/bloodbank/viewEditOrders.form">BbViewEditOrdersForm</prop>
+	           <prop key="module/bloodbank/viewEditTests.form">BbViewEditTestsForm</prop>
+	           <prop key="module/bloodbank/printBloodTag.form">BbPrintBloodTag</prop>
+	           
+	           <prop key="module/bloodbank/donor/addOrUpdate.form">BbAddOrUpdateDonorForm</prop>
+	           <prop key="module/bloodbank/donor/findDonorByNameOrId.form">BbFindDonorByNameOrIdForm</prop>
+	           
+	           <prop key="module/bloodbank/patient/addOrUpdate.form">BbAddOrUpdatePatientForm</prop>
+	           <prop key="module/bloodbank/patient/findDonorByNameOrId.form">BbFindDonorPByNameOrIdForm</prop>
+				<prop key="module/bloodbank/patient/showDonorEncounters.form">BbShowDonorEncounters</prop>
+	    	</props>
+		</property>
+    </bean>
+	
+     <bean id="BbPrintBloodTag" class="org.openmrs.module.bloodbank.web.controller.PrintBloodTagController">
+        <property name="commandName"><value></value></property>
+        <property name="formView"><value>/module/bloodbank/printBloodTag</value></property>
+        <property name="successView"><value>viewStock.form</value></property>
+    </bean> 
+	        
+    <bean id="BbViewEditTestsForm" class="org.openmrs.module.bloodbank.web.controller.ViewEditTestsController">
+        <property name="commandName"><value></value></property>
+        <property name="formView"><value>/module/bloodbank/viewEditTests</value></property>
+        <property name="successView"><value>viewEditTests.form</value></property>
+    </bean>
+    	    		        
+    <bean id="BbViewEditOrdersForm" class="org.openmrs.module.bloodbank.web.controller.ViewEditOrdersController">
+        <property name="commandName"><value></value></property>
+        <property name="formView"><value>/module/bloodbank/viewEditOrders</value></property>
+        <property name="successView"><value>viewEditOrders.form</value></property>
+    </bean>
+    	    	        
+    <bean id="BbViewStockForm" class="org.openmrs.module.bloodbank.web.controller.ViewStockController">
+        <property name="commandName"><value></value></property>
+        <property name="formView"><value>/module/bloodbank/viewStock</value></property>
+        <property name="successView"><value>viewStock.form</value></property>
+    </bean>
+    	        
+    <bean id="BbShowDonorEncounters" class="org.openmrs.module.bloodbank.web.controller.patient.ShowDonorEncountersController">
+        <property name="commandName"><value></value></property>
+        <property name="formView"><value>/module/bloodbank/patient/showDonorEnc</value></property>
+        <property name="successView"><value>showDonorEncounters.form</value></property>
+    </bean>
+    	        
+    <bean id="BbValidateDonorIdForm" class="org.openmrs.module.bloodbank.web.controller.ValidateExistingDonorIdController">
+        <property name="commandName"><value></value></property>
+        <property name="formView"><value>/module/bloodbank/validateDonorId</value></property>
+        <property name="successView"><value>validateDonorId.form</value></property>
+    </bean>
+	    
+    <bean id="BbnewIds" class="org.openmrs.module.bloodbank.web.controller.GenerateDonorIdController">
+        <property name="commandName"><value></value></property>
+        <property name="formView"><value>/module/bloodbank/newIdsForm</value></property>
+        <property name="successView"><value>findDonorByNameOrId.form</value></property>
+    </bean>
+	        
+    <bean id="BbFindDonorPByNameOrIdForm" class="org.openmrs.module.bloodbank.web.controller.patient.FindDonorController">
+        <property name="commandName"><value></value></property>
+        <property name="formView"><value>/module/bloodbank/patient/findDonor</value></property>
+        <property name="successView"><value>findDonorByNameOrId.form</value></property>
+    </bean>
+	    
+    <bean id="BbFindDonorByNameOrIdForm" class="org.openmrs.module.bloodbank.web.controller.donor.FindDonorController">
+        <property name="commandName"><value></value></property>
+        <property name="formView"><value>/module/bloodbank/donor/findDonor</value></property>
+        <property name="successView"><value>findDonorByNameOrId.form</value></property>
+    </bean>
+	
+    <bean id="BbAddOrUpdatePatientForm" class="org.openmrs.module.bloodbank.web.controller.patient.AddOrUpdateDonorController">
+		<property name="sessionForm"><value>true</value></property>
+		<property name="commandName"><value></value></property>
+		<property name="formView"><value>/module/bloodbank/patient/addOrUpdateDonorForm</value></property>
+		<property name="successView"><value>addOrUpdate.form</value></property>
+    </bean>
+    	
+    <bean id="BbAddOrUpdateDonorForm" class="org.openmrs.module.bloodbank.web.controller.donor.AddOrUpdateDonorController">
+		<property name="sessionForm"><value>true</value></property>
+		<property name="commandName"><value></value></property>
+		<property name="formView"><value>/module/bloodbank/donor/addOrUpdateDonorForm</value></property>
+		<property name="successView"><value>/module/bloodbank/mainForm</value></property>
+    </bean>
+	
+    <bean id="BbmainForm" class="org.openmrs.module.bloodbank.web.controller.BloodBankMainFormController">
+		<property name="commandName"><value></value></property>
+		<property name="formView"><value>/module/bloodbank/mainForm</value></property>
+		<property name="successView"><value>/module/bloodbank/mainForm</value></property>
+    </bean>
+     
+	-->
+	
+</beans>

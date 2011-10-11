@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqldiff PUBLIC "-//OpenMRS//DTD OpenMRS SQL Diff Config 1.0//EN" "http://resources.openmrs.org/doctype/sqldiff-1.0.dtd">
+
+<sqldiff version="1.0">
+	<help>
+		USE:
+			The diffs are ordered by datamodel version number.
+			The script can be run in a top down fashion and is
+			expected to not failor overwrite old data
+		
+		EXPECT:
+			- "use business-database-name;" was called prior to
+			   calling this script
+	</help>
+	
+	<diff>
+		<version>1.0.0</version>
+		<author>Murodillo Latifov A.</author>
+		<date>Nov 1 2010</date>
+		<description>
+			Creates bb_blood_bank table
+		</description>
+		<sql>			
+CREATE TABLE if not exists `bb_blood_bank` (
+  `blood_bank_id` int(11) NOT NULL AUTO_INCREMENT,
+  `questionnaire` int(11) DEFAULT NULL,
+  `test` int(11) DEFAULT NULL,
+  `bloodResult` int(11) DEFAULT NULL,
+  `questionnaireProvider` int(11) DEFAULT NULL,
+  `testProvider` int(11) DEFAULT NULL,
+  `bloodResultProvider` int(11) DEFAULT NULL,
+  `storage_date` datetime DEFAULT NULL,
+  `expiry_date` datetime DEFAULT NULL,
+  `issued_to` int(11) DEFAULT NULL,
+  `disposed` int(11) DEFAULT NULL,
+  `expired` bit(1) DEFAULT NULL,
+  `creator` int(11) DEFAULT NULL,
+  `date_created` datetime NOT NULL,
+  `changed_by` int(11) DEFAULT NULL,
+  `date_changed` datetime DEFAULT NULL,
+  `voided` bit(1) NOT NULL,
+  `voided_by` int(11) DEFAULT NULL,
+  `date_voided` datetime DEFAULT NULL,
+  `void_reason` varchar(255) DEFAULT NULL,
+  `patient` int(11) DEFAULT NULL,
+  PRIMARY KEY (`blood_bank_id`),
+  KEY `FK3C87C6C02F7B1341` (`changed_by`),
+  KEY `FK3C87C6C027413213` (`questionnaireProvider`),
+  KEY `FK3C87C6C073852862` (`voided_by`),
+  KEY `FK3C87C6C030FD61A2` (`questionnaire`),
+  KEY `FK3C87C6C06DD29891` (`test`),
+  KEY `FK3C87C6C0EBD4F1AB` (`creator`),
+  KEY `FK3C87C6C01C74659` (`disposed`),
+  KEY `FK3C87C6C0FBD224C3` (`issued_to`),
+  KEY `FK3C87C6C09A640A02` (`testProvider`),
+  KEY `FK3C87C6C042AFFE96` (`bloodResult`),
+  KEY `FK3C87C6C06BD19B07` (`bloodResultProvider`),
+  KEY `FK3C87C6C059C003D6` (`patient`),
+  CONSTRAINT `FK3C87C6C01C74659` FOREIGN KEY (`disposed`) REFERENCES `concept` (`concept_id`),
+  CONSTRAINT `FK3C87C6C027413213` FOREIGN KEY (`questionnaireProvider`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `FK3C87C6C02F7B1341` FOREIGN KEY (`changed_by`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `FK3C87C6C030FD61A2` FOREIGN KEY (`questionnaire`) REFERENCES `encounter` (`encounter_id`),
+  CONSTRAINT `FK3C87C6C042AFFE96` FOREIGN KEY (`bloodResult`) REFERENCES `encounter` (`encounter_id`),
+  CONSTRAINT `FK3C87C6C059C003D6` FOREIGN KEY (`patient`) REFERENCES `patient` (`patient_id`),
+  CONSTRAINT `FK3C87C6C06BD19B07` FOREIGN KEY (`bloodResultProvider`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `FK3C87C6C06DD29891` FOREIGN KEY (`test`) REFERENCES `encounter` (`encounter_id`),
+  CONSTRAINT `FK3C87C6C073852862` FOREIGN KEY (`voided_by`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `FK3C87C6C09A640A02` FOREIGN KEY (`testProvider`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `FK3C87C6C0EBD4F1AB` FOREIGN KEY (`creator`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `FK3C87C6C0FBD224C3` FOREIGN KEY (`issued_to`) REFERENCES `concept` (`concept_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8
+
+
+		</sql>
+	</diff>
+	
+	<diff>
+	<version>1.0.1</version>
+		<author>Samson Valland</author>
+		<date>Mar 15th 2011</date>
+		<description>
+			Changes 'disposed' column to boolean and removes reference to concept
+		</description>
+		<sql>
+		ALTER TABLE `bb_blood_bank`
+ 		DROP FOREIGN KEY `FK3C87C6C01C74659`;
+		
+		ALTER TABLE `bb_blood_bank` 
+		MODIFY COLUMN `disposed` BIT(1);
+		</sql>
+	</diff>
+	
+	<diff>
+	<version>1.0.2</version>
+		<author>Sanchit,Apurv,Swetank</author>
+		<date>26th September 2011</date>
+		<description> Create table bloodbank_form </description>
+		<sql>
+			CREATE TABLE IF NOT EXISTS `bloodbank_form` (
+			  `form_id` int(11) NOT NULL,
+			  `name` varchar(30) NOT NULL DEFAULT '',
+			  `description` varchar(300) NOT NULL DEFAULT '',
+			  `content` varchar(10240) NOT NULL DEFAULT '',
+			  `concept_name` varchar(300) DEFAULT NULL,
+			  PRIMARY KEY (`form_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;			
+			
+			INSERT IGNORE INTO `bloodbank_form` VALUES( 1 , "BB Issue Form" , "Blood Issue Form" , NULL , NULL );
+			INSERT IGNORE INTO `bloodbank_form` VALUES( 2 , "BB Questionnaire Form" , "Blood Donation Form" , NULL , NULL );
+			INSERT IGNORE INTO `bloodbank_form` VALUES( 3 , "BB Test Form" , "Blood Test Form" , NULL , NULL );
+		</sql>
+	</diff>
+	
+</sqldiff>

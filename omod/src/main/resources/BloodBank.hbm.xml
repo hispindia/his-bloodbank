@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.bloodbank.model">
+
+	<class name="BloodBank" table="bb_blood_bank" batch-size="500">
+
+		<id name="bloodBankId" type="int" column="blood_bank_id"
+			unsaved-value="0">
+				<generator class="native" />
+		</id>
+		<many-to-one name="patient" lazy="false" class="org.openmrs.Patient" column="patient" />
+		<many-to-one name="questionnaire" lazy="false" class="org.openmrs.Encounter" column="questionnaire" />
+		<property name="questionnaireComplete" column="questionnaire_complete" />
+		<many-to-one name="test" lazy="false" class="org.openmrs.Encounter" column="test" />
+		<property name="testComplete" column="test_complete" />
+		<many-to-one name="bloodResult" lazy="false" class="org.openmrs.Encounter" column="bloodResult" />
+		<property name="bloodResultComplete" column="blood_result_complete" />
+		<many-to-one name="questionnaireProvider" lazy="false" class="org.openmrs.User" column="questionnaireProvider" />
+		<many-to-one name="testProvider" lazy="false" class="org.openmrs.User" column="testProvider" />
+		<many-to-one name="bloodResultProvider" lazy="false" class="org.openmrs.User" column="bloodResultProvider" />
+					
+		<many-to-one name="bloodGroup" lazy="false" class="org.openmrs.Concept" column="blood_group" />			
+		<property name="storageDate" column="storage_date" />
+	    <property name="expiryDate" column="expiry_date" />
+	    <many-to-one name="issuedTo" lazy="false" class="org.openmrs.Concept" column="issued_to" />
+	    <property name="disposed" column="disposed" />
+	    <property name="expired" column="expired" />
+	    
+<!-- General properties -->
+		<many-to-one name="creator" class="org.openmrs.User" lazy="no-proxy" />
+
+		<property name="dateCreated" type="java.util.Date"
+			column="date_created" not-null="true" length="19" />
+
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+
+		<property name="dateChanged" type="java.util.Date"
+			column="date_changed" length="19" />
+
+		<property name="voided" type="boolean" not-null="true" />
+
+		<many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by" />
+
+		<property name="dateVoided" type="java.util.Date"
+			column="date_voided" length="19" />
+
+		<property name="voidReason" type="java.lang.String"
+			column="void_reason" length="255" />
+
+	</class>
+</hibernate-mapping>

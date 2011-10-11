@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module configVersion="1.1">
+	
+	<!-- Base Module Properties -->
+	<id>bloodbank</id>
+	<name>Blood Bank</name>
+	<version>1.0.1</version>
+	<package>org.openmrs.module.bloodbank</package>
+	<author>Samson Valland</author>
+	<description>
+			Blood Bank Management Module
+	</description>
+
+	<activator>org.openmrs.module.bloodbank.BloodBankActivator</activator>
+	
+	<updateURL>https://</updateURL>
+	<!-- /Base Module Properties -->
+	
+	<require_version>1.6.0.11652</require_version>
+	
+	<!-- Extensions -->
+	<extension>
+		<point>org.openmrs.admin.list</point>
+		<class>org.openmrs.module.bloodbank.extension.html.AdminList</class>
+	</extension>
+
+    <extension>
+		<point>org.openmrs.gutter.tools</point>
+		<class>org.openmrs.module.bloodbank.extension.html.BloodBankHeader</class>
+	</extension>	
+	
+	<!-- AOP
+	<advice>
+		<point>org.openmrs.api.FormService</point>
+		<class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class>
+	</advice>
+	 /AOP -->
+	
+	
+	<!-- Required Privileges -->
+	<privilege>
+		<name>All Blood Bank</name>
+		<description>Allows user to access Blood Bank pages/functions</description>
+	</privilege>
+	<privilege>
+		<name>Edit Blood Bank</name>
+		<description>Allows user to access Blood Bank pages/functions</description>
+	</privilege>
+	<privilege>
+		<name>View Blood Bank</name>
+		<description>Allows user to access Blood Bank pages/functions</description>
+	</privilege>
+
+	 <!-- /Required Privileges -->
+
+
+	<!-- Required Global Properties -->
+	<globalProperty>
+		<property>bloodbank.donor.dilema</property>
+		<defaultValue>patient</defaultValue>
+		<description>
+			To solve the dilema of Donor or Patient object to be used by module.
+			Use donor for Donor and patient for Patient.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>billing.identifier_prefix</property>
+		<defaultValue>SHDDUDO</defaultValue>
+		<description>
+			Donor Id prefix.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>bloodbank.patientIdTypeId</property>
+		<defaultValue>2</defaultValue>
+		<description>
+			Patient Identifier Type Id.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>bloodbank.question.formId</property>
+		<defaultValue>5</defaultValue>
+		<description>
+			Questionnaire form Id.
+		</description>
+	</globalProperty>	
+	<globalProperty>
+		<property>bloodbank.test.formId</property>
+		<defaultValue>5</defaultValue>
+		<description>
+			Test form Id.
+		</description>
+	</globalProperty>	
+	<globalProperty>
+		<property>bloodbank.result.formId</property>
+		<defaultValue>5</defaultValue>
+		<description>
+			Result form Id.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>bloodbank.donorIdTypeId</property>
+		<defaultValue>3</defaultValue>
+		<description>
+			Donor Identifier Type Id.
+		</description>
+	</globalProperty>	
+	<globalProperty>
+		<property>bloodbank.question.enctype.id</property>
+		<defaultValue>4</defaultValue>
+		<description>
+			Questionnaire Encounter Type Id.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>bloodbank.test.enctype.id</property>
+		<defaultValue>6</defaultValue>
+		<description>
+			Blood Tests Encounter Type Id.
+		</description>
+	</globalProperty>	
+	<globalProperty>
+		<property>bloodbank.result.enctype.id</property>
+		<defaultValue>7</defaultValue>
+		<description>
+			Blood Results Encounter Type Id.
+		</description>
+	</globalProperty>	
+	<globalProperty>
+		<property>bloodbank.location.id</property>
+		<defaultValue>1</defaultValue>
+		<description>
+			Location Id.
+		</description>
+	</globalProperty>	
+	<globalProperty>
+		<property>bloodbank.number.of.ids</property>
+		<defaultValue>30</defaultValue>
+		<description>
+			Number of prepared Donor Ids to be generated.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>bloodbank.question.valid.count</property>
+		<defaultValue>2</defaultValue>
+		<description>
+			Number of obs in a questionnaire encounter to call it valid.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>bloodbank.test.valid.count</property>
+		<defaultValue>6</defaultValue>
+		<description>
+			Number of obs in a questionnaire encounter to call it valid.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>bloodbank.result.valid.count</property>
+		<defaultValue>2</defaultValue>
+		<description>
+			Number of obs in a questionnaire encounter to call it valid.
+		</description>
+	</globalProperty>	
+	<globalProperty>
+		<property>bloodbank.expiry.period</property>
+		<defaultValue>35</defaultValue>
+		<description>
+			Number of days from storage of blood to expiry of blood.
+		</description>
+	</globalProperty>		
+	<globalProperty>
+		<property>bloodbank.order.concepts</property>
+		<defaultValue>1326,5,7,45</defaultValue>
+		<description>
+			Concepts used by Billing module to generate blood orders. Should be comma
+			separated id's of respective Concepts
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>bloodbank.blood.group.concept</property>
+		<defaultValue>45</defaultValue>
+		<description>
+			Concepts used to hold other concepts related to blood grouping
+		</description>
+	</globalProperty>
+		
+	<!--/Required Global Properties -->
+	
+	<!--dwr>
+		<allow>
+			<create creator="new" javascript="DWRHtmlFormEntryService">
+				<param name="class" value="org.openmrs.module.htmlformentry.web.DWRHtmlFormEntryService"/>
+				<include method="checkIfLoggedIn"/>
+				<include method="authenticate"/>
+			</create>
+		</allow>
+
+		<signatures>
+			<![CDATA[
+				import org.openmrs.module.htmlformentry.web.DWRHtmlFormEntryService;
+				DWRHtmlFormEntryService.checkIfLoggedIn();
+				DWRHtmlFormEntryService.authenticate(String user, String pass);
+			]]>
+		</signatures>
+	</dwr-->
+	
+	<!-- Servlets -->
+	<!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> 
+	<servlet>
+		<servlet-name>formDownload</servlet-name>
+		<servlet-class>@MODULE_PACKAGE@.web.FormDownloadServlet</servlet-class>
+	</servlet>
+	-->
+	<!-- /Servlets -->
+	
+	
+	<!-- Internationalization -->
+	<!-- All message codes should start with @MODULE_ID@.* -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	<messages>
+		<lang>fr</lang>
+		<file>messages_fr.properties</file>
+	</messages>
+	<messages>
+		<lang>es</lang>
+		<file>messages_es.properties</file>
+	</messages>
+	<!-- /Internationalization -->
+	
+	<mappingFiles>
+BloodBank.hbm.xml
+generatedids.hbm.xml
+	</mappingFiles>
+	
+</module>

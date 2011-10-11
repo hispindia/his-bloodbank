@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.bloodbank.model">
+
+	<class name="BloodbankForm" table="bloodbank_form" batch-size="500">
+
+		<id name="id" type="int" column="form_id"
+			unsaved-value="0">
+				<generator class="native"/>
+		</id>
+		<property name="name" column="name" />
+		<property name="conceptName" column="concept_name" />
+		<property name="content" column="content" />
+		<property name="description" column="description" />
+	</class>
+</hibernate-mapping>
