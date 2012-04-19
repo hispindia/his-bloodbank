@@ -4,57 +4,36 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>bloodbank</artifactId>
-		<version>1.0.4-SNAPSHOT</version>
+		<version>1.1.2</version>
 	</parent>
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>bloodbank-api</artifactId>
 	<packaging>jar</packaging>
-	<name>Blood Bank API</name>
-	<description>API project for Blood Bank</description>
+	<name>Bloodbank API</name>
+	<description>API project for bloodbank</description>
 
 	<dependencies>
-		<!-- 
-		Add other dependencies from lib:
-		<dependency>
-			<groupId>org.other.library</groupId>
-			<artifactId>library-name</artifactId>
-		</dependency>
-		-->
-		
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
 			<type>jar</type>
 		</dependency>
-<!-- 		<dependency>
- -->
-<!-- 			<groupId>org.openmrs.api</groupId>
- -->
-<!-- 			<artifactId>openmrs-api</artifactId>
- -->
-<!-- 			<type>test-jar</type>
- -->
-<!-- 		</dependency>
- -->
 		<dependency>
 			<groupId>org.openmrs.web</groupId>
 			<artifactId>openmrs-web</artifactId>
 			<type>jar</type>
 		</dependency>
-<!-- 		<dependency>
- -->
-<!-- 			<groupId>org.openmrs.web</groupId>
- -->
-<!-- 			<artifactId>openmrs-web</artifactId>
- -->
-<!-- 			<type>test-jar</type>
- -->
-<!-- 		</dependency>
- -->
 		<dependency>
 			<groupId>org.openmrs.test</groupId>
 			<artifactId>openmrs-test</artifactId>
 			<type>pom</type>
+		</dependency>	
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>hospitalcore-api</artifactId>
+			<version>1.4.10.6</version>
+			<type>jar</type>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

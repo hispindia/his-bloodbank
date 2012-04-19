@@ -1,29 +1,28 @@
 /**
- *  Copyright 2011 Society for Health Information Systems Programmes, India (HISP India)
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
  *
- *  This file is part of Bloodbank module.
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
  *
- *  Bloodbank module is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
-
- *  Bloodbank module is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Bloodbank module.  If not, see <http://www.gnu.org/licenses/>.
- *
- **/
-
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 package org.openmrs.module.bloodbank.db.hibernate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -32,6 +31,8 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.bloodbank.BloodBankService;
@@ -99,6 +100,14 @@ public class HibernateBloodBankDAO implements BloodbankDAO {
 	public BloodBank getRecordById(int id){
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(BloodBank.class);
 		criteria.add(Expression.eq("bloodBankId",id));
+		return (BloodBank) criteria.uniqueResult();
+	}
+	
+	public BloodBank getRecordByTest(Encounter encounter){
+		System.out.println("line 1"+ encounter.getEncounterId());
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(BloodBank.class);
+		criteria.add(Expression.eq("test",encounter));
+		System.out.println("line 2"+ encounter.getEncounterId());
 		return (BloodBank) criteria.uniqueResult();
 	}
 
@@ -171,7 +180,64 @@ public class HibernateBloodBankDAO implements BloodbankDAO {
 	}
 	
 	public BloodbankForm saveBloodbankForm(BloodbankForm form) {
+		
 		return (BloodbankForm) sessionFactory.getCurrentSession().merge(form);
 	}
+
+	public BloodBank getRecordByResult(Encounter encounter) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(BloodBank.class);
+		criteria.add(Expression.eq("bloodResult",encounter));
+		return (BloodBank) criteria.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<org.openmrs.Order> getOrders(Date orderStartDate, String phrase) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(org.openmrs.Order.class);
+		System.out.println("entered here");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String startDate = sdf.format(orderStartDate) + " 00:00:00";
+		String endDate = sdf.format(orderStartDate) + " 23:59:59";
+		OrderType orderType = Context.getOrderService().getOrderType(Integer.parseInt(Context.getAdministrationService().getGlobalProperty("registration.bloodbankOrderTypeId")));
+		System.out.println(orderType.getName());
+		criteria.add(Restrictions.eq("orderType", orderType));
+		SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(
+				"yyyy-MM-dd hh:mm:ss");
+		try {
+			System.out.println(dateTimeFormatter.parse(startDate)+ " to " + dateTimeFormatter.parse(endDate));
+			criteria.add(Expression.between("startDate",dateTimeFormatter.parse(startDate),dateTimeFormatter.parse(endDate)));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		criteria.add(Restrictions.eq("discontinued", false));
+		
+		List<Patient> patients = null;
+		if (!StringUtils.isBlank(phrase)) {
+			patients = Context.getPatientService().getPatients(phrase);
+		}
+		if (!CollectionUtils.isEmpty(patients))
+			criteria.add(Restrictions.in("patient", patients));
+		
+		criteria.setMaxResults(30);
+		System.out.println(criteria.list().size());
+		criteria.addOrder(org.hibernate.criterion.Order.asc("startDate"));
+		return criteria.list();
+	}
+
+	
+	public boolean isPatientDonor(Integer patientId) {
+		
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(BloodBank.class);
+		Patient patient = Context.getPatientService().getPatient(patientId);
+		criteria.add(Restrictions.eq("patient", patient));
+		System.out.println("In HBm Dao+ "+criteria.list()+" "+patient);
+		if( criteria.list() != null ){
+			System.out.println("Returning True");
+			return true;
+		}
+		System.out.println("Returning False");
+	return false;
+	}
+
 	
 }

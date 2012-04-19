@@ -29,7 +29,7 @@ donor reg
 <script>
 jQuery(document).ready(function(){
 
-	     $.ajaxSetup ({  
+	     jQuery.ajaxSetup ({  
 		         cache: false  
 		     }); 
 	
@@ -40,20 +40,20 @@ jQuery(document).ready(function(){
    
  //  load() functions  
      var loadUrl = "findDonorByNameOrId.form";  
-//     $("#donorName").keyup(function(){  
-//         if($("#donorName").val().length>=3)
-//         $("#display").html(ajax_load).load(loadUrl, {donorName: $("#donorName").val()});  
+//     jQuery("#donorName").keyup(function(){  
+//         if(jQuery("#donorName").val().length>=3)
+//         jQuery("#display").html(ajax_load).load(loadUrl, {donorName: jQuery("#donorName").val()});  
 //     }); 
 
-     //  $.post()  
-         $("#donorName").keyup(function(){
-        	 if($("#donorName").val().length>=3){  
-             $("#display").html(ajax_load);  
-             $.post(  
+     //  jQuery.post()  
+         jQuery("#donorName").keyup(function(){
+        	 if(jQuery("#donorName").val().length>=3){  
+             jQuery("#display").html(ajax_load);  
+             jQuery.post(  
                  loadUrl,  
-                 {donorName: $("#donorName").val()},  
+                 {donorName: jQuery("#donorName").val()},  
                  function(responseText){  
-                     $("#display").html(responseText);  
+                     jQuery("#display").html(responseText);  
                  },  
                  "html"  
              );  

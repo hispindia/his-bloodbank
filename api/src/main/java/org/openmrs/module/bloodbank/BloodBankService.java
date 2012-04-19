@@ -1,28 +1,26 @@
 /**
- *  Copyright 2011 Society for Health Information Systems Programmes, India (HISP India)
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
  *
- *  This file is part of Bloodbank module.
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
  *
- *  Bloodbank module is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
-
- *  Bloodbank module is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Bloodbank module.  If not, see <http://www.gnu.org/licenses/>.
- *
- **/
-
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 package org.openmrs.module.bloodbank;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.module.bloodbank.model.BloodBank;
 import org.openmrs.module.bloodbank.model.PreparedDonorId;
@@ -45,7 +43,7 @@ public interface BloodBankService {
 	List<PreparedDonorId> getUnusedPreparedId();
 
 	List<BloodBank> getRecordsByPatient(Patient patient);
-
+	
 	void saveBloodBank(BloodBank bloodBank);
 
 	List<BloodBank> getValidStockRecords();
@@ -55,7 +53,13 @@ public interface BloodBankService {
 	List<BloodBank> getValidStockByTypeConcept(Concept con);
 
 	BloodBank getRecordById(int id);
+	
+	BloodBank getRecordByTest(Encounter encounter);
 
+	BloodBank getRecordByResult(Encounter encounter);
+	
+	public List<Order> getOrders(Date date, String phrase);
+	
 	List<PreparedDonorId> getAllPreparedIds();
 	
 	/**
@@ -88,5 +92,11 @@ public interface BloodBankService {
 	 * @return
 	 */
 	public BloodbankForm saveBloodbankForm(BloodbankForm form);
+	
+	/**
+	 * Given PatientId find if the patient has an existing encounter, is a donor or not.
+	 */
+	public boolean isPatientDonor(Integer PatientId);
+	
 
 }

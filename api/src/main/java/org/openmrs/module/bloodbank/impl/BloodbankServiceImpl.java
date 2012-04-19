@@ -1,36 +1,25 @@
-/**
- *  Copyright 2011 Society for Health Information Systems Programmes, India (HISP India)
- *
- *  This file is part of Bloodbank module.
- *
- *  Bloodbank module is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
-
- *  Bloodbank module is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Bloodbank module.  If not, see <http://www.gnu.org/licenses/>.
- *
- **/
-
 package org.openmrs.module.bloodbank.impl;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.Order;
+import org.openmrs.OrderType;
 import org.openmrs.Patient;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.bloodbank.BloodBankService;
 import org.openmrs.module.bloodbank.db.BloodbankDAO;
 import org.openmrs.module.bloodbank.model.BloodBank;
 import org.openmrs.module.bloodbank.model.PreparedDonorId;
 import org.openmrs.module.bloodbank.model.BloodbankForm;
+import org.openmrs.module.hospitalcore.BillingConstants;
+import org.openmrs.module.hospitalcore.util.GlobalPropertyUtil;
 
 
 public class BloodbankServiceImpl implements BloodBankService{
@@ -85,6 +74,11 @@ public class BloodbankServiceImpl implements BloodBankService{
 	   return getDao().getRecordById(id);
     }
     
+	public BloodBank getRecordByTest(Encounter encounter){
+		return getDao().getRecordByTest(encounter);
+	}
+
+    
 	public BloodbankDAO getDao() {
 		return dao;
 	}
@@ -103,5 +97,20 @@ public class BloodbankServiceImpl implements BloodBankService{
 	
 	public BloodbankForm saveBloodbankForm(BloodbankForm form) {
 		return dao.saveBloodbankForm(form);
+	}
+
+	public BloodBank getRecordByResult(Encounter encounter) {
+		return dao.getRecordByResult(encounter);
+	}
+
+	public List<Order> getOrders(Date date, String phrase) {
+		System.out.println("Orders created");
+		return dao.getOrders(date, phrase);
+
+	}
+
+	public boolean isPatientDonor(Integer PatientId) {
+		System.out.println("Reached ServiceImpl");
+		return dao.isPatientDonor(PatientId);
 	}
 }

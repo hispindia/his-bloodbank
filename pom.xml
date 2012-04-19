@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.openmrs.module</groupId>
-  <artifactId>bloodbank</artifactId>
-  <version>1.0.4-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>Bloodbank module</name>
-  
-  	<scm>
-		<connection>scm:svn:http://svn.openmrs.org/openmrs-modules/mvntest/trunk/</connection>
-		<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-modules/mvntest/trunk/</developerConnection>
-		<url>http://svn.openmrs.org/openmrs-modules/mvntest/trunk/</url>
-	</scm>
-	
-  <dependencyManagement>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.openmrs.module</groupId>
+	<artifactId>bloodbank</artifactId>
+	<version>1.1.2</version>
+	<packaging>pom</packaging>
+	<name>Bloodbank</name>
+	<description>Bloodbank module</description>
+
+	<url>http://openmrs.org</url>
+
+	<modules>
+		<module>api</module>
+		<module>omod</module>
+	</modules>
+
+	<properties>
+		<openMRSVersion>1.8.0</openMRSVersion>
+	</properties>
+
+	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.openmrs.api</groupId>
@@ -23,7 +29,6 @@
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
-			
 			<dependency>
 				<groupId>org.openmrs.api</groupId>
 				<artifactId>openmrs-api</artifactId>
@@ -31,7 +36,6 @@
 				<type>test-jar</type>
 				<scope>test</scope>
 			</dependency>
-			
 			<dependency>
 				<groupId>org.openmrs.web</groupId>
 				<artifactId>openmrs-web</artifactId>
@@ -39,7 +43,6 @@
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
-			
 			<dependency>
 				<groupId>org.openmrs.test</groupId>
 				<artifactId>openmrs-test</artifactId>
@@ -49,26 +52,22 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
-  <properties>
-  	<openMRSVersion>1.6.1</openMRSVersion>
-  </properties>
-  
-  <build>
+
+	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<configuration>
-						<target>1.6</target>
-						<source>1.6</source>
+						<target>1.5</target>
+						<source>1.5</source>
 					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>org.motech.openmrs.plugin</groupId>
+					<groupId>org.openmrs.maven.plugins</groupId>
 					<artifactId>maven-openmrs-plugin</artifactId>
-					<version>1.0-RC4</version>
+					<version>1.0.1</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -92,9 +91,5 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-  
-  <modules>
-  	<module>api</module>
-  	<module>omod</module>
-  </modules>
+
 </project>

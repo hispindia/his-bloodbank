@@ -1,23 +1,3 @@
-/**
- *  Copyright 2011 Society for Health Information Systems Programmes, India (HISP India)
- *
- *  This file is part of Bloodbank module.
- *
- *  Bloodbank module is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
-
- *  Bloodbank module is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Bloodbank module.  If not, see <http://www.gnu.org/licenses/>.
- *
- **/
-
 package org.openmrs.module.bloodbank.web.controller.editor;
 
 import java.sql.Date;
@@ -78,30 +58,7 @@ public class ShowFormWithDetailsController {
 		Encounter encounter = null;
 		BloodbankForm form = null;
 		System.out.println("Enterened New Class");
-		/*
-		if (radiologyTestId != null) {
-			RadiologyTest test = rs.getRadiologyTestById(radiologyTestId);
-			form = test.getForm();
-			encounter = test.getEncounter();
-
-			model.addAttribute("patientIdentifier", test.getPatient()
-					.getPatientIdentifier().getIdentifier());
-			model.addAttribute("orderId", test.getOrder().getOrderId());
-		} else {
-			if (id == 0) { // generate default form
-
-				form = rs.getDefaultForm();
-			} else { // get the existing form
-
-				form = rs.getRadiologyFormById(id);
-			}
-
-			if (encounterId != null) {
-				encounter = Context.getEncounterService().getEncounter(
-						encounterId);
-			}
-		}
-		*/
+		
 		form = bbs.getBloodbankFormById(id);
 		if (encounterId != null){
 			encounter = Context.getEncounterService().getEncounter(encounterId);
@@ -117,7 +74,7 @@ public class ShowFormWithDetailsController {
 		personidfier = patient.getActiveIdentifiers();
 //		System.out.println("params"+personName+encDateTime+locationName);
 		System.out.println("Enterened New Class 1");
-		pdets.put("Donor ID", personidfier.get(1).toString());
+//		pdets.put("Donor ID", personidfier.get(1).toString());
 		System.out.println("Enterened New Class 2");
 		pdets.put("Name", patient.getGivenName()+" "+patient.getMiddleName()+" "+patient.getFamilyName());
 		String date = patient.getBirthdate().toString();
@@ -129,21 +86,19 @@ public class ShowFormWithDetailsController {
 		System.out.println("Enterened New Class 4");
 		pdets.put("Gender", patient.getGender());
 		pdets.put("Father/Husband Name", personattris.get(0).toString());
-		pdets.put("Address for Communication", patient.getPersonAddress().getAddress1());
+//		pdets.put("Address for Communication", patient.getPersonAddress().getAddress1());
 		System.out.println("Enterened New Class 5");
 		for (Map.Entry<String, String> entry : pdets.entrySet()) {
 		    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 		}
 		
 		model.addAttribute("pdetsmap", pdets);
-		System.out.println("Enterened New Class after pdets model");
 		if (encounter != null){
 			model.addAttribute("encounterId", encounter.getEncounterId());
 		}
-		System.out.println("Enterened New Class after enc");
+		
 		
 		BloodbankUtil.generateDataFromEncounter(model, encounter, form);
-		System.out.println("Enterened New Class 2nd last");
 		return "/module/bloodbank/editor/showDets";
 	}
 

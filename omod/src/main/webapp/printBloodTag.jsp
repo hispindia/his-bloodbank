@@ -1,4 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ include file="includes/js_css.jsp" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
@@ -84,7 +86,7 @@
 	
 	<div id="info">
 		<table border="0" cellspacing="5" cellpadding="5">
-			<tr><td>Donor I.D. No:</td><td><strong>${donorId}</strong></td></tr>
+			<tr><td>Patient I.D. No:</td><td><strong>${patientId}</strong></td></tr>
 			<tr><td>Date of Collection:</td><td><strong><openmrs:formatDate date="${bb.storageDate}"/></strong></td></tr>
 			<tr><td>Date of Expiry:</td> <td><strong><openmrs:formatDate date="${bb.expiryDate}"/></strong></td></tr>
 		</table>

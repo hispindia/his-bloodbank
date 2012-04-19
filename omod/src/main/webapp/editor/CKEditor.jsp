@@ -16,17 +16,17 @@
 
 	var DUPLICATED_FORM = false;
 	/*
-	$(document).ready(function(){		
-		$("#concept").autocomplete(getContextPath() + '/module/bloodbank/ajax/autocompleteConceptSearch.htm').result(function(event, item){
+	jQuery(document).ready(function(){		
+		jQuery("#concept").autocomplete(getContextPath() + '/module/bloodbank/ajax/autocompleteConceptSearch.htm').result(function(event, item){
 			checkExistingForm();
 		}
-		$("#concept").focus();
+		jQuery("#concept").focus();
 		);;		
 	});
 	*/
 	//insert obs from thickbox
 	function insertObs(name, type, required){		
-		$.ajax({
+		jQuery.ajax({
 			type : "GET",
 			url : getContextPath() + "/module/bloodbank/getHTMLObs.form",
 			data : ({
@@ -45,9 +45,9 @@
 	/*
 	// check existing form with concept/type
 	function checkExistingForm(item){		
-		type = $('#formType').val();
-		conceptName = $("#concept").val();
-		$.ajax({
+		type = jQuery('#formType').val();
+		conceptName = jQuery("#concept").val();
+		jQuery.ajax({
 			type : "GET",
 			url : getContextPath() + "/module/bloodbank/ajax/checkExistingForm.htm",
 			data : ({
@@ -56,7 +56,7 @@
 				formId			: '${param.id}'
 			}),
 			success : function(data) {
-				$('#checkExistingFormStatus').html(data);
+				jQuery('#checkExistingFormStatus').html(data);
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
 				alert("ERROR " + xhr);
@@ -68,7 +68,7 @@
 		if(DUPLICATED_FORM){
 			alert('Please check form type and concept and submit again!');			
 		} else {
-			$("#bloodbankForm").submit();
+			jQuery("#bloodbankForm").submit();
 		}
 	}
 

@@ -83,11 +83,11 @@
 	</div>
 </div>
 <script>
-$(document).ready(function(){
+jQuery(document).ready(function(){
 
-	$("#donorName").focus();
+	jQuery("#donorName").focus();
 	
-	$("#donorDob").datepicker({
+	jQuery("#donorDob").datepicker({
 		showOn: 'button',
 	    buttonImage: '${pageContext.request.contextPath}/moduleResources/bloodbank/styles/images/calendar.gif',
 	    buttonImageOnly: true,
@@ -97,10 +97,10 @@ $(document).ready(function(){
 	    maxDate: '+0D',
 	    dateFormat: 'dd/mm/yy',
 	    constrainInput: false,
-	    onClose: function() { $("#donorDob").focus();$("#donorAddress1").focus() }
+	    onClose: function() { jQuery("#donorDob").focus();jQuery("#donorAddress1").focus() }
 	});
 	
-	    $.ajaxSetup ({  
+	    jQuery.ajaxSetup ({  
 		         cache: false  
 		     }); 
 });
@@ -110,11 +110,11 @@ $(document).ready(function(){
 	
 	function openIdField(){
 		if(!document.getElementById("preregistered").checked){
-			$('#idField').hide();
+			jQuery('#idField').hide();
 			visible = false;
 			}else{
-		$('#idField').css("display", "inline-table");
-		$('#donorPrepId').css("width", "300px");
+		jQuery('#idField').css("display", "inline-table");
+		jQuery('#donorPrepId').css("width", "300px");
 		visible=true;
 		validateForm();
 		}
@@ -128,20 +128,20 @@ $(document).ready(function(){
      //  ajax call for patient name 
      var loadUrl = "patient/findDonorByNameOrId.form";  
 
-         $("#donorName").keyup(function(){
-        	 if($("#donorName").val().length>=3){  
-             $("#display").html(ajax_load);  
-             $.get(  
+         jQuery("#donorName").keyup(function(){
+        	 if(jQuery("#donorName").val().length>=3){  
+             jQuery("#display").html(ajax_load);  
+             jQuery.get(  
                  loadUrl,  
-                 {donorName: $("#donorName").val()},  
+                 {donorName: jQuery("#donorName").val()},  
                  function(responseText){  
-                     $("#display").html(responseText); 
+                     jQuery("#display").html(responseText); 
                      validateForm(); 
                  },  
                  "html"  
              );  
         	 }else{
-        		 $("#display").html("");
+        		 jQuery("#display").html("");
             	 }
          });  
 
@@ -149,14 +149,14 @@ $(document).ready(function(){
 
      var loadUrl2 = "validateDonorId.form";  
      
-         $("#isValidDonorId").click(function(){
+         jQuery("#isValidDonorId").click(function(){
  
-             $("#valid").html(ajax_load);  
-             $.get(  
+             jQuery("#valid").html(ajax_load);  
+             jQuery.get(  
                  loadUrl2,  
-                 {donorPrepId: $("#donorPrepId").val()},  
+                 {donorPrepId: jQuery("#donorPrepId").val()},  
                  function(responseText){  
-                     $("#existId").attr('value',responseText); 
+                     jQuery("#existId").attr('value',responseText); 
                      validateId();
                      validateForm(); 
                  },  
@@ -166,26 +166,26 @@ $(document).ready(function(){
          });  
          
 	function validateId(){
-		if($("#existId").attr('value')=="yes"){
-			var newVal = $("#donorPrepId").val();
-			$("#donId").attr('value',newVal);
-			$("#donIdShow").html(newVal); 
+		if(jQuery("#existId").attr('value')=="yes"){
+			var newVal = jQuery("#donorPrepId").val();
+			jQuery("#donId").attr('value',newVal);
+			jQuery("#donIdShow").html(newVal); 
 			
-  			 $("#valid").html(ajax_ok);
+  			 jQuery("#valid").html(ajax_ok);
 		}else{
-			$("#valid").html(ajax_wrong);
+			jQuery("#valid").html(ajax_wrong);
 			}
 	}
 
 	function invalidate(){
-		$("#existId").attr('value',"");
-	   	 $("#valid").html(ajax_wrong);
+		jQuery("#existId").attr('value',"");
+	   	 jQuery("#valid").html(ajax_wrong);
 	   	 validateForm();
 		}
          
        //Makes every word start with caps.
     function capitalize() {
-			var fullname = $('#' + event.target.id).attr('value');
+			var fullname = jQuery('#' + event.target.id).attr('value');
 			
              var newVal = '';
              var names = (jQuery.trim(fullname)).split(' ');
@@ -198,26 +198,26 @@ $(document).ready(function(){
                      names[c].substring(1,names[c].length) ;
              	}
              }
-             $('#' + event.target.id).attr('value', newVal);
+             jQuery('#' + event.target.id).attr('value', newVal);
              validateForm();
          } 
 
       // Validates form by checking if all required fields are completed correctly
      function validateForm(){
 
-             if($("#donorName").attr('value').length > 50){
+             if(jQuery("#donorName").attr('value').length > 50){
                  alert('Please check the length of donor name. Donor name should be less than 50');
                  document.getElementById("saveButton").disabled = true;
                  return;
              }
-             var name = $("#donorName").attr('value');
-			 var fatherhusband = $("#fatherHusbandName").attr('value');
-             var patidentifier = $("#patId").attr('value');
-             var donidentifier = $("#donId").attr('value');
-             var birthdate = $("#donorDob").attr('value');
-             var address = $("#donorAddress1").attr('value');
-			 var idValid = $("#existId").attr('value');
-			 var noPatients = $('#display').is(':empty');
+             var name = jQuery("#donorName").attr('value');
+			 var fatherhusband = jQuery("#fatherHusbandName").attr('value');
+             var patidentifier = jQuery("#patId").attr('value');
+             var donidentifier = jQuery("#donId").attr('value');
+             var birthdate = jQuery("#donorDob").attr('value');
+             var address = jQuery("#donorAddress1").attr('value');
+			 var idValid = jQuery("#existId").attr('value');
+			 var noPatients = jQuery('#display').is(':empty');
 
              var dataEnteredisValid = function() {
              	return ( name!="" && fatherhusband!="" && patidentifier!="" && patidentifier!=undefined && donidentifier!="" && donidentifier!=undefined && birthdate!="" && address!="");
@@ -227,7 +227,7 @@ $(document).ready(function(){
              	return ( name!="" && idValid=="yes" && noPatients && patidentifier!="" && patidentifier!=undefined && donidentifier!="" && donidentifier!=undefined && birthdate!="" && address!="");
              }
                           
-			if($("#preregistered").attr('checked') == false){
+			if(jQuery("#preregistered").attr('checked') == false){
              if(dataEnteredisValid()){
 		       	document.getElementById("saveButton").disabled = false;
 				if(!noPatients){

@@ -1,6 +1,7 @@
 <!-- Header & Include -->
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="includes/js_css.jsp" %>
 
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery-1.4.2.min.js"></script>

@@ -1,24 +1,20 @@
 <!-- Header & Include -->
 <%@ include file="mainMenu.jsp"%>
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery-ui-1.8.2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/agesimplifier.js"></script>
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/css/start/jquery-ui-1.8.2.custom.css" />
+<%@ include file="../includes/js_css.jsp" %>
 
 <openmrs:require privilege="All Blood Bank" otherwise="/login.htm" redirect="/module/bloodbank/main.form" />
 
 <br/>
 <div id="wrapper">
 	<div id="leftCol" style="float:left; min-width:500px">
-		<form class="box" id="addDonorForm" method="post">
-			<div class="boxHeader">Donor Details</div>
+		<form class="box" id="addDonorForm" action="javascript:searchPatients();" method="get">
+			<div class="boxHeader">Search Donor by Name</div>
 			<div>
 				<div>
 					<div style="margin-top:12px;"><spring:message code="bloodbank.donor.name"/></div>
 					<div style="margin-top:12px;display: inline-table;"><input type="text" id="donorName" name="donorName" value="" onblur="capitalize()" style="min-width:600px;"/></div>
-
 				</div>
+				<!-- 
 				<div style="margin-top:12px;"><spring:message code="bloodbank.donor.fatherhusbandname"/></div>
 				<div style="margin-top:12px;display: inline-table;"><input type="text" id="fatherHusbandName" name="fatherHusbandName" value="" onblur="capitalize()" style="width:400px;"/></div><br/>
 				<div style="margin-top:12px;display: inline-table;"><spring:message code="bloodbank.patient.id"/>&nbsp;&nbsp;&nbsp;</div><div style="margin-top:12px;display: inline-table;"><b>${patientIdentifier }</b></div>
@@ -48,8 +44,8 @@
 				<div style="margin-top:12px;"><spring:message code="bloodbank.donor.address1"/></div>
 				<div><input type="text" id="donorAddress1" name="donorAddress1" value="" onblur="validateForm();" style="width:600px;"/></div>
 
-				<!-- <div style="margin-top:12px;"><spring:message code="bloodbank.donor.address2"/></div>
-				<div><input type="text" id="donorAddress2" name="donorAddress2" value=""  style="width:600px;"/></div>-->
+				 <div style="margin-top:12px;"><spring:message code="bloodbank.donor.address2"/></div>
+				<div><input type="text" id="donorAddress2" name="donorAddress2" value=""  style="width:600px;"/></div>
 				<div style="display: none;">
 					<div><spring:message code="bloodbank.donor.cityVillage"/></div>
 					<div><input type="text" id="cityVillage" name="cityVillage" value="" style="width:600px;"/></div>
@@ -71,23 +67,27 @@
 					<div><input type="text" id="postalCode" name="postalCode" value="" style="width:600px;"/></div>	
 				</div>
 			</div>
-			<div><input  style="margin-top:12px;" id="saveButton" name="saveButton" disabled="true" type="submit" value="<spring:message code="general.save"/>"/> <b id="savemessage" style="display:none; color:red">Already existing!</b></div>
-		</form>
+			<div> <input  style="margin-top:12px;" id="saveButton" name="saveButton" disabled="true" type="submit" value="<spring:message code="general.save"/>"/> <b id="savemessage" style="display:none; color:red">Already existing!</b> </div>
+		</form>-->
+	</div> 
 	</div>
 	<!--Right colstart -->
-	<div id="rightCol" style="float:left; width:500px">
+	<div id="rightCol" style="float:right; width:700px">
 		<div class="box" style="margin-left:4px;">
 			<span class="boxHeader">Matching patients</span>
 			<div id="display" name="display"></div>
 		</div>
+		<input id = "prev" name="prev" type="button"  disabled="disabled" onclick="javascript:prevMatching();" value="Previous"  style="margin-left:5px;"/>
+        <input id = "next" name="next" type="button"  disabled="disabled" onclick="javascript:nextMatching();" value="Next" style="float:right;	margin-right:5px;"/>
 	</div>
 </div>
 <script>
-$(document).ready(function(){
+jQuery(document).ready(function(){
 
-	$("#donorName").focus();
+	jQuery("#donorName").focus();
 	
-	$("#donorDob").datepicker({
+	
+	jQuery("#donorDob").datepicker({
 		showOn: 'button',
 	    buttonImage: '${pageContext.request.contextPath}/moduleResources/bloodbank/styles/images/calendar.gif',
 	    buttonImageOnly: true,
@@ -97,12 +97,14 @@ $(document).ready(function(){
 	    maxDate: '+0D',
 	    dateFormat: 'dd/mm/yy',
 	    constrainInput: false,
-	    onClose: function() { $("#donorDob").focus();$("#donorAddress1").focus() }
+	    onClose: function() { jQuery("#donorDob").focus();jQuery("#donorAddress1").focus() }
 	});
 	
-	    $.ajaxSetup ({  
+	    jQuery.ajaxSetup ({  
 		         cache: false  
 		     }); 
+			 
+	//jQuery('#donorDob').datepicker({yearRange:'c-30:c+30', dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true});
 });
 
 // show prep id filed
@@ -110,11 +112,11 @@ $(document).ready(function(){
 	
 	function openIdField(){
 		if(!document.getElementById("preregistered").checked){
-			$('#idField').hide();
+			jQuery('#idField').hide();
 			visible = false;
 			}else{
-		$('#idField').css("display", "inline-table");
-		$('#donorPrepId').css("width", "300px");
+		jQuery('#idField').css("display", "inline-table");
+		jQuery('#donorPrepId').css("width", "300px");
 		visible=true;
 		validateForm();
 		}
@@ -126,37 +128,129 @@ $(document).ready(function(){
      var ajax_wrong = "<img src='${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/css/images/wrong-icon5.gif' alt='loading...' />";
 
      //  ajax call for patient name 
-     var loadUrl = "patient/findDonorByNameOrId.form";  
-
-         $("#donorName").keyup(function(){
-        	 if($("#donorName").val().length>=3){  
-             $("#display").html(ajax_load);  
-             $.get(  
+ var loadUrl = "patient/findDonorByNameOrId.form";  
+     var counter = 0; var tot = 0;
+		 jQuery("#donorName").keyup(function(){
+        	 if(jQuery("#donorName").val().length>=3){  
+             jQuery("#display").html(ajax_load);  
+             jQuery.get(  
                  loadUrl,  
-                 {donorName: $("#donorName").val()},  
-                 function(responseText){  
-                     $("#display").html(responseText); 
+                 {donorName: jQuery("#donorName").val() , Counter: 0},  
+                 function(responseText){
+					 var counterandtot = responseText.substring(0 , responseText.indexOf("&"));//1?1
+					 counter = responseText.substring(0 , responseText.indexOf("?"));
+					 tot = responseText.substring(responseText.indexOf("?")+1 , responseText.indexOf("&"));
+					 //alert(counter);
+					 //alert(tot);
+                     jQuery("#display").html(responseText);
+					 enabledisable(counter); 
                      validateForm(); 
                  },  
                  "html"  
-             );  
+             ); 
         	 }else{
-        		 $("#display").html("");
+        		 jQuery("#display").html("");
             	 }
          });  
+
+// Prev And Next Matching Functions
+	
+	function searchPatients(){
+		
+		jQuery.get(  
+                 loadUrl,  
+                 {donorName: jQuery("#donorName").val() , Counter: counter},  
+                 function(responseText){
+					 var counterandtot = responseText.substring(0 , responseText.indexOf("&"));//1?1
+					 counter = responseText.substring(0 , responseText.indexOf("?"));
+					 tot = responseText.substring(responseText.indexOf("?")+1 , responseText.indexOf("&"));
+                     jQuery("#display").html(responseText); 
+                     enabledisable(counter);
+					 validateForm(); 
+					 
+                 },  
+                 "html"  
+             );
+			 
+	}
+	
+	function prevMatching(){
+		
+		counter = counter - 20;
+		jQuery.get(  
+                 loadUrl,  
+                 {donorName: jQuery("#donorName").val() , Counter: counter},  
+                 function(responseText){
+					 var counterandtot = responseText.substring(0 , responseText.indexOf("&"));//1?1
+					 counter = responseText.substring(0 , responseText.indexOf("?"));
+					 tot = responseText.substring(responseText.indexOf("?")+1 , responseText.indexOf("&"));
+                     jQuery("#display").html(responseText); 
+                     enabledisable(counter);
+					 validateForm(); 
+					 
+                 },  
+                 "html"  
+             );
+			 
+	}
+	
+	function nextMatching(){
+		//alert(typeof(counter))
+		counter = counter - 0;
+		counter = counter + 20;
+		jQuery.get(  
+                 loadUrl,  
+                 {donorName: jQuery("#donorName").val() , Counter: counter},  
+                 function(responseText){
+					 var counterandtot = responseText.substring(0 , responseText.indexOf("&"));//1?1
+					 counter = responseText.substring(0 , responseText.indexOf("?"));
+					 tot = responseText.substring(responseText.indexOf("?") + 1, responseText.indexOf("&"));
+                     jQuery("#display").html(responseText); 
+                     enabledisable(counter);
+					 validateForm(); 
+					 
+                 },  
+                 "html"  
+             );
+	} 
+
+	function enabledisable(){
+		
+		//alert("ed"+counter);
+		counter = counter - 0;
+		total = tot - 0; 
+		
+		if(total<=20){
+			jQuery("#prev").attr("disabled","disabled");
+			jQuery("#next").attr("disabled","disabled");
+		}
+		else if(counter <= 20 && counter <= total){
+			jQuery("#prev").attr("disabled","disabled");
+			jQuery("#next").attr("disabled","");
+		}
+		else if(counter >= total-1 ){
+			jQuery("#prev").attr("disabled","");
+			jQuery("#next").attr("disabled","disabled");
+		}
+		else if(counter >=20 && counter <= total-20){
+			jQuery("#prev").attr("disabled","");
+			jQuery("#next").attr("disabled","");
+		}
+		
+	}
 
 //ajax call for preprinted donor id validation 
 
      var loadUrl2 = "validateDonorId.form";  
      
-         $("#isValidDonorId").click(function(){
+         jQuery("#isValidDonorId").click(function(){
  
-             $("#valid").html(ajax_load);  
-             $.get(  
+             jQuery("#valid").html(ajax_load);  
+             jQuery.get(  
                  loadUrl2,  
-                 {donorPrepId: $("#donorPrepId").val()},  
+                 {donorPrepId: jQuery("#donorPrepId").val()},  
                  function(responseText){  
-                     $("#existId").attr('value',responseText); 
+                     jQuery("#existId").attr('value',responseText); 
                      validateId();
                      validateForm(); 
                  },  
@@ -166,26 +260,26 @@ $(document).ready(function(){
          });  
          
 	function validateId(){
-		if($("#existId").attr('value')=="yes"){
-			var newVal = $("#donorPrepId").val();
-			$("#donId").attr('value',newVal);
-			$("#donIdShow").html(newVal); 
+		if(jQuery("#existId").attr('value')=="yes"){
+			var newVal = jQuery("#donorPrepId").val();
+			jQuery("#donId").attr('value',newVal);
+			jQuery("#donIdShow").html(newVal); 
 			
-  			 $("#valid").html(ajax_ok);
+  			 jQuery("#valid").html(ajax_ok);
 		}else{
-			$("#valid").html(ajax_wrong);
+			jQuery("#valid").html(ajax_wrong);
 			}
 	}
 
 	function invalidate(){
-		$("#existId").attr('value',"");
-	   	 $("#valid").html(ajax_wrong);
+		jQuery("#existId").attr('value',"");
+	   	 jQuery("#valid").html(ajax_wrong);
 	   	 validateForm();
 		}
          
        //Makes every word start with caps.
     function capitalize() {
-			var fullname = $('#' + event.target.id).attr('value');
+			var fullname = jQuery('#donorName').val();
 			
              var newVal = '';
              var names = (jQuery.trim(fullname)).split(' ');
@@ -198,36 +292,38 @@ $(document).ready(function(){
                      names[c].substring(1,names[c].length) ;
              	}
              }
-             $('#' + event.target.id).attr('value', newVal);
+			 jQuery('#donorName').val(newVal);             
              validateForm();
          } 
 
       // Validates form by checking if all required fields are completed correctly
      function validateForm(){
 
-             if($("#donorName").attr('value').length > 50){
-                 alert('Please check the length of donor name. Donor name should be less than 50');
+             if(jQuery("#donorName").attr('value').length > 50){
+                 //alert('Please check the length of donor name. Donor name should be less than 50');
                  document.getElementById("saveButton").disabled = true;
                  return;
              }
-             var name = $("#donorName").attr('value');
-			 var fatherhusband = $("#fatherHusbandName").attr('value');
-             var patidentifier = $("#patId").attr('value');
-             var donidentifier = $("#donId").attr('value');
-             var birthdate = $("#donorDob").attr('value');
-             var address = $("#donorAddress1").attr('value');
-			 var idValid = $("#existId").attr('value');
-			 var noPatients = $('#display').is(':empty');
+             var name = jQuery("#donorName").attr('value');
+			 var fatherhusband = jQuery("#fatherHusbandName").attr('value');
+             var patidentifier = jQuery("#patId").attr('value');
+             var donidentifier = jQuery("#donId").attr('value');
+             var birthdate = jQuery("#donorDob").attr('value');
+             var address = jQuery("#donorAddress1").attr('value');
+			 var idValid = jQuery("#existId").attr('value');
+			 var noPatients = jQuery('#display').is(':empty');
 
              var dataEnteredisValid = function() {
-             	return ( name!="" && fatherhusband!="" && patidentifier!="" && patidentifier!=undefined && donidentifier!="" && donidentifier!=undefined && birthdate!="" && address!="");
+             	return( name!="");
+             	// return ( name!="" && fatherhusband!="" && patidentifier!="" && patidentifier!=undefined && donidentifier!="" && donidentifier!=undefined && birthdate!="" && address!="");
              }
              
              var dataEnteredisValid2 = function() {
-             	return ( name!="" && idValid=="yes" && noPatients && patidentifier!="" && patidentifier!=undefined && donidentifier!="" && donidentifier!=undefined && birthdate!="" && address!="");
+             	return( name!="");
+             	//return ( name!="" && idValid=="yes" && noPatients && patidentifier!="" && patidentifier!=undefined && donidentifier!="" && donidentifier!=undefined && birthdate!="" && address!="");
              }
                           
-			if($("#preregistered").attr('checked') == false){
+			if(jQuery("#preregistered").attr('checked') == false){
              if(dataEnteredisValid()){
 		       	document.getElementById("saveButton").disabled = false;
 				if(!noPatients){

@@ -10,9 +10,9 @@
 
 
 <script type="text/javascript">
-	$(document).ready(function() 
+	jQuery(document).ready(function() 
 		{ 
-			$("#myTable").tablesorter({sortList: [[0,0]]}); 
+			jQuery("#myTable").tablesorter({sortList: [[0,0]]}); 
 		} 
 	); 
 </script>

@@ -8,7 +8,7 @@
 	<name>@MODULE_NAME@</name>
 	<version>@MODULE_VERSION@</version>
 	<package>@MODULE_PACKAGE@</package>
-	<author>Samson Valland</author>
+	<author>Samson Valland,Sanchit,Apurv,Swetank</author>
 	<description>
 			Blood Bank Management Module
 	</description>
@@ -18,7 +18,7 @@
 	<updateURL>https://</updateURL>
 	<!-- /Base Module Properties -->
 	
-	<require_version>1.6.0.11652</require_version>
+	<require_version>1.8.0.11652</require_version>
 	
 	<!-- Extensions -->
 	<extension>

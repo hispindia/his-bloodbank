@@ -1,4 +1,5 @@
 <%@ include file="mainMenu.jsp"%>
+<%@ include file="includes/js_css.jsp" %>
 
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/bloodbank/styles/common.css" />

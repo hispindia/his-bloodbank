@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+
 <c:choose>
 	<c:when test="${type eq 'textbox'}">
 		<input type="text" name="${obsName}" class="${classic}" value="" title="${obsName}" />
@@ -17,6 +18,6 @@
 		</c:forEach>
 	</c:when>
 	<c:when test="${type eq 'date'}">
-		<input type="text" name="${obsName}"  class="${classic}" value="" title="${obsName}" onFocus="showCalendar(this)"/>
+		<input type="text" name="${obsName}"  class="${classic}" value="" title="DATE/ESTIMATED DATE" onFocus="showCalendar(this)"/>
 	</c:when>
 </c:choose>

@@ -1,29 +1,14 @@
-/**
- *  Copyright 2011 Society for Health Information Systems Programmes, India (HISP India)
- *
- *  This file is part of Bloodbank module.
- *
- *  Bloodbank module is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
-
- *  Bloodbank module is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Bloodbank module.  If not, see <http://www.gnu.org/licenses/>.
- *
- **/
-
 package org.openmrs.module.bloodbank.db;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.Order;
+import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.bloodbank.model.BloodBank;
@@ -44,6 +29,8 @@ public interface BloodbankDAO {
 	public List<BloodBank> getRecordsByPatient(Patient patient);
 	
 	public BloodBank getRecordById(int id);
+	
+	public BloodBank getRecordByTest(Encounter encounter);
 
 	public void saveBloodBank(BloodBank bloodBank);
 	
@@ -85,5 +72,11 @@ public interface BloodbankDAO {
 	 * @return
 	 */
 	public BloodbankForm saveBloodbankForm(BloodbankForm form);
+
+	public BloodBank getRecordByResult(Encounter encounter);
+	
+	public List<Order> getOrders(Date date, String phrase);
+
+	public boolean isPatientDonor(Integer patientId);
 
 }

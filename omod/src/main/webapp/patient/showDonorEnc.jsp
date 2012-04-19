@@ -2,9 +2,6 @@
 <%@ include file="mainMenu.jsp"%>
 <%@ include file="../includes/js_css.jsp" %>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery-ui-1.8.2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/agesimplifier.js"></script>
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/css/start/jquery-ui-1.8.2.custom.css" />
 
 <openmrs:require privilege="All Blood Bank" otherwise="/login.htm" redirect="/module/bloodbank/main.form" />
@@ -15,7 +12,7 @@
 
 <h2>Encounters of donor ${patient.personName}</h2>
 <h3>Patient ID: ${patient.patientIdentifier}</h3>
-<h3>Donor ID: ${donorId}</h3>
+<!--  <h3>Donor ID: ${donorId}</h3>--><br>
 <h3>Blood bank encounters:</h3>
 
 <form method="post" accept-charset="utf-8">
@@ -27,7 +24,11 @@
 <script type="text/javascript">
 	function showPopup( id , encounterId , mode )
 	{
-		tb_show( "testing", "showForm.form?modal=true&height=600&width=800&id=" + id + "&encounterId=" + encounterId + "&mode=" + mode );
+		tb_show( "testing", "showForm.form?script=refresh();&modal=true&height=600&width=800&id=" + id + "&encounterId=" + encounterId + "&mode=" + mode );
+	}
+	
+	function refresh(){
+		window.location.href = window.location.href;
 	}
 </script>
 
@@ -90,7 +91,7 @@
 				<!-- 
 				<a href="${pageContext.request.contextPath}/module/bloodbank/showForm.form?encounterId=${enc.test.encounterId}&mode=VIEW&returnUrl=${pageContext.request.contextPath}/module/bloodbank/showDonorEncounters.form">
 				-->
-				<a href="javascript: showPopup( 3 , ${enc.questionnaire.encounterId} , 'view' );">
+				<a href="javascript: showPopup( 3 , ${enc.test.encounterId} , 'view' );">
 						<img src="${pageContext.request.contextPath}/images/info.gif" title="Edit" align="top" border="0">
 				</a>
 				</openmrs:hasPrivilege>
@@ -118,7 +119,7 @@
 				<!-- 
 				<a href="${pageContext.request.contextPath}/module/bloodbank/showForm.form?encounterId=${enc.bloodResult.encounterId}&mode=VIEW&returnUrl=${pageContext.request.contextPath}/module/bloodbank/showDonorEncounters.form">
 				-->
-				<a href="javascript: showPopup( 1 , ${enc.questionnaire.encounterId} , 'view' );">
+				<a href="javascript: showPopup( 1 , ${enc.bloodResult.encounterId} , 'view' );">
 						<img src="${pageContext.request.contextPath}/images/info.gif" title="Edit" align="top" border="0">
 					</a>
 				</openmrs:hasPrivilege>

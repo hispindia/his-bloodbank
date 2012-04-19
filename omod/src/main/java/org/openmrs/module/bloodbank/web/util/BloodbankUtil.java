@@ -1,23 +1,3 @@
-/**
- *  Copyright 2011 Society for Health Information Systems Programmes, India (HISP India)
- *
- *  This file is part of Bloodbank module.
- *
- *  Bloodbank module is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
-
- *  Bloodbank module is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Bloodbank module.  If not, see <http://www.gnu.org/licenses/>.
- *
- **/
-
 package org.openmrs.module.bloodbank.web.util;
 
 import java.util.ArrayList;
@@ -53,11 +33,16 @@ public class BloodbankUtil
 		if (concept.getDatatype().getName().equalsIgnoreCase("Text")) {
 			return obs.getValueText();
 		} else if (concept.getDatatype().getName().equalsIgnoreCase("Numeric")) {
-			return obs.getValueNumeric().toString();
+			if(obs.getValueDatetime() != null){
+				return obs.getValueNumeric().toString();
+			}
 		} else if (concept.getDatatype().getName().equalsIgnoreCase("Coded")) {
 			return obs.getValueCoded().getName().getName();
 		} else if(concept.getDatatype().getName().equalsIgnoreCase("Date")){
-			return obs.getValueDatetime().toString().substring(0,10);
+			if(obs.getValueDatetime() != null){
+				return obs.getValueDatetime().toString().substring(0,10);
+			}
+			return "";
 		}
 		return null;
 	}

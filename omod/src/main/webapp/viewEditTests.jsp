@@ -2,9 +2,6 @@
 <%@ include file="mainMenu.jsp"%>
 <%@ include file="includes/js_css.jsp" %>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery-ui-1.8.2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/agesimplifier.js"></script>
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/css/start/jquery-ui-1.8.2.custom.css" />
 
 <script type="text/javascript">
@@ -14,9 +11,15 @@
 			tb_show( "testing", "showFormWithDetails.form?modal=true&height=600&width=800&id=" + id + "&encounterId=" + encounterId + "&mode=" + mode );
 		}
 		else{
-			tb_show( "testing", "showForm.form?modal=true&height=600&width=800&id=" + id + "&encounterId=" + encounterId + "&mode=" + mode );
+			tb_show( "testing", "showForm.form?script=refresh();&modal=true&height=600&width=800&id=" + id + "&encounterId=" + encounterId + "&mode=" + mode );
 		}
+		
 	}
+	
+	function refresh(){
+		window.location.href = window.location.href;
+	}
+		
 </script>
 <openmrs:require privilege="All Blood Bank" otherwise="/login.htm" redirect="/module/bloodbank/main.form" />
 
@@ -36,7 +39,7 @@
 		<th class="testlist"><spring:message code="Person.name"/></th>
 		<th class="testlist">Questionnaire</th>
 		<th class="testlist">Edit</th>
-		<th class="testlist">Donor ID</th>
+		<!-- <th class="testlist">Donor ID</th> -->
 		<th class="testlist">Patient ID</th>
 	</tr>
 	</thead>
@@ -56,7 +59,7 @@
 			<c:if test="${ rec.test != null }">
 				<openmrs:hasPrivilege privilege="Edit Encounters">
 				<!-- <a href="${pageContext.request.contextPath}/module/htmlformentry/htmlFormEntry.form?encounterId=${rec.test.encounterId}&mode=EDIT&returnUrl=${pageContext.request.contextPath}/module/bloodbank/viewEditTests.form">-->
-					<a href="javascript: showPopup( 3 , ${rec.questionnaire.encounterId} , 'edit' );">
+					<a href="javascript: showPopup( 3 , ${rec.test.encounterId} , 'edit' );">
 						<img src="${pageContext.request.contextPath}/images/edit.gif" title="Edit" align="top" border="0"> Add test data
 					</a>
 				</openmrs:hasPrivilege>
@@ -69,11 +72,11 @@
 					</a>
 				</openmrs:hasPrivilege>
 			</td>
-			<td class="testlist" align="center">
+			<!-- <td class="testlist" align="center">
 				<openmrs:hasPrivilege privilege="Edit Encounters">
 					${donorId[rec.patient]}
 				</openmrs:hasPrivilege>
-			</td>
+			</td> -->
 		</tr>
 		</c:forEach>
 </table>
@@ -89,15 +92,15 @@
 
 <script type="text/javascript">
 function loadUrlIntoEncounterPopup(title, urlToLoad) {
-        $("#displayEncounterPopupIframe").attr("src", urlToLoad);
-        $('#displayEncounterPopup')
+        jQuery("#displayEncounterPopupIframe").attr("src", urlToLoad);
+        jQuery('#displayEncounterPopup')
             .dialog('option', 'title', title)
-            .dialog('option', 'height', $(window).height() - 50) 
+            .dialog('option', 'height', jQuery(window).height() - 50) 
             .dialog('open');
 }
 
-$(document).ready(function() {
-	$('#displayEncounterPopup').dialog({
+jQuery(document).ready(function() {
+	jQuery('#displayEncounterPopup').dialog({
 					title: 'dynamic',
 					autoOpen: false,
 					draggable: true,

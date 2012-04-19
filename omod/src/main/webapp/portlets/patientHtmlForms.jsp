@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="../includes/js_css.jsp" %>
 
 <openmrs:hasPrivilege privilege="Form Entry">
 

@@ -1,10 +1,12 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="../includes/js_css.jsp" %>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery.form.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery.validate.pack.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery.validate.min.js"></script>
 <script type="text/javascript">
 	var mode = "${mode}";
-	$(document).ready(function(){
+	jQuery(document).ready(function(){
 		if(mode=="view"){
 			fillData();
 			makeForView();			
@@ -18,14 +20,14 @@
 	
 	// Add required class
 	function addValidations(){
-		$("#form_content input").each(function(index){
-			input = $(this);
+		jQuery("#form_content input").each(function(index){
+			input = jQuery(this);
 			input.addClass("required");
 			input.attr("title", "This field is required!");
 		});
 		
-		$("#form_content select").each(function(index){
-			select = $(this);			
+		jQuery("#form_content select").each(function(index){
+			select = jQuery(this);			
 			select.addClass("required");
 			select.attr("title", "This field is required!");
 		});
@@ -33,8 +35,8 @@
 	
 	// Make all inputs for view (hide box, dropdown)
 	function makeForView(){
-		$("#form_content input").each(function(index){
-			input = $(this);
+		jQuery("#form_content input").each(function(index){
+			input = jQuery(this);
 			input.css("border", "0px");
 			input.css("color", "blue");
 			input.css("font-size", "medium");
@@ -53,17 +55,17 @@
 			}
 		});
 		
-		$("#form_content select").each(function(index){
-			select = $(this);
+		jQuery("#form_content select").each(function(index){
+			select = jQuery(this);
 			select.css("border", "0px");			
-			selectedOption = $("option:selected", select);
+			selectedOption = jQuery("option:selected", select);
 			selectedOption.css("color", "blue");
 			select.after("<span style='color:blue; font-size: medium;'>"+selectedOption.html()+"</span>");
 			select.hide();
 		});
 		
-		$("#form_content textarea").each(function(index){
-			textarea = $(this);
+		jQuery("#form_content textarea").each(function(index){
+			textarea = jQuery(this);
 			value = textarea.val().replace("\n", "<br/>");			
 			textarea.after("<p style='color:blue; font-size: medium;'>" + value + "</p>");
 			textarea.hide();
@@ -73,8 +75,8 @@
 	// set input value
 	function setInputValue(name, value){		
 		
-		$("#form_content input[name=" + name + "]").each(function(index){
-			input = $(this);
+		jQuery("#form_content input[name=" + name + "]").each(function(index){
+			input = jQuery(this);
 			if(input.attr("type")=="radio"){
 				if(input.attr("value")==value){
 					input.attr("checked", "checked");
@@ -84,19 +86,19 @@
 			}
 		});
 		
-		$("#form_content select[name="+ name + "]").each(function(index){
-			select = $(this);			
-			$("option", select).each(function(index){
-				option = $(this);				
+		jQuery("#form_content select[name="+ name + "]").each(function(index){
+			select = jQuery(this);			
+			jQuery("option", select).each(function(index){
+				option = jQuery(this);				
 				if(option.attr("value")==value){
 					option.attr("selected", "selected");
 				}
 			});
 		});
 		
-		$("#form_content textarea[name="+ name + "]").each(function(index){
-			textarea = $(this);			
-			$("textarea").html(value);
+		jQuery("#form_content textarea[name="+ name + "]").each(function(index){
+			textarea = jQuery(this);			
+			jQuery("textarea").html(value);
 		});
 	}
 	
@@ -110,10 +112,10 @@
 	
 	// Submit the form
 	function submitForm(){
-		validated = $("#contentForm").valid();
+		validated = jQuery("#contentForm").valid();
 		if(validated){
-			var formContent = $("#contentForm").formSerialize();
-			$.post(getContextPath() + "/module/bloodbank/showForm.form", formContent, function(data) {
+			var formContent = jQuery("#contentForm").formSerialize();
+			jQuery.post(getContextPath() + "/module/bloodbank/showForm.form", formContent, function(data) {
 				${param.script}
 			});
 			 tb_remove();
@@ -123,8 +125,8 @@
 	// Validate
 	function isValidated(){
 		validated = true;
-		$("#form_content input").each(function(index){
-			input = $(this);
+		jQuery("#form_content input").each(function(index){
+			input = jQuery(this);
 			
 			if(input.attr('type')=='text'){
 				if(input.val().length<=0){
@@ -134,15 +136,15 @@
 			
 			// make changes for radio buttons
 			if(input.attr('type')=='radio'){
-				if($("#form_content input[name="+ input.attr('name') + "]:checked").length<=0)
+				if(jQuery("#form_content input[name="+ input.attr('name') + "]:checked").length<=0)
 					validated = false;
 			}
 		});
 		
-		$("#form_content select").each(function(index){
-			select = $(this);			
-			$("option:selected", select).each(function(){
-				option = $(this);
+		jQuery("#form_content select").each(function(index){
+			select = jQuery(this);			
+			jQuery("option:selected", select).each(function(){
+				option = jQuery(this);
 				if(option.attr('value')=='Please select')
 					validated = false;
 			});
@@ -159,6 +161,12 @@
 		</c:if>		
 	}	
 	
+	function printPage(){
+		$("#contentForm").printArea({
+			mode : "popup",
+			popClose : true
+		});
+	}
 </script>
 
 <form id="contentForm" method="post" action="showForm.form">
@@ -174,9 +182,6 @@
 	<br>
 	<input type="hidden" name="encounterId" value="${encounterId}"/>
 	<div id = patientDetails>
-		<!-- <p>Patient Age:&nbsp;
-		<input type="text" value="${patientAge}" title="This field is required!" name="Patient" style="border: 0px none; 	color: blue; font-size: medium; background-color: white;" disabled="">
-		</p>-->
 	
 	<p style="border: 0px none; color: red; font-size: large; background-color: white;" >Donor Questionaire Details</p>
 	</div>
@@ -195,5 +200,5 @@
 
 <c:if test="${mode eq 'view'}">	 
 	<input type="button" value="Back" onClick="tb_remove();"/>
-	<input type="button" value="Print" onClick="javascript:window.print();"/>
+	<input type="button" value="Print" onClick="printPage();"/>
 </c:if>

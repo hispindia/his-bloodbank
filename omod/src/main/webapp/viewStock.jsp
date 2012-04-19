@@ -2,11 +2,7 @@
 <%@ include file="mainMenu.jsp"%>
 <%@ include file="includes/js_css.jsp" %>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery-ui-1.8.2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/agesimplifier.js"></script>
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/css/start/jquery-ui-1.8.2.custom.css" />
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery-ui/css/redmond/jquery-ui-1.7.2.custom.css" />
 <script type="text/javascript">
 	function showPopup( id , encounterId , mode )
 	{
@@ -14,8 +10,12 @@
 			tb_show( "testing", "showFormWithDetails.form?modal=true&height=600&width=800&id=" + id + "&encounterId=" + encounterId + "&mode=" + mode );
 		}
 		else{
-			tb_show( "testing", "showForm.form?modal=true&height=600&width=800&id=" + id + "&encounterId=" + encounterId + "&mode=" + mode );
+			tb_show( "testing", "showForm.form?script=refresh();&modal=true&height=600&width=800&id=" + id + "&encounterId=" + encounterId + "&mode=" + mode );
 		}
+	}
+	
+	function refresh(){
+		window.location.reload();
 	}
 </script>
 
@@ -105,7 +105,7 @@
 			<th class="encounterTypeHeader">Questionnaire</th>
 			<th class="encounterProviderHeader">Blood tests</th>
 			<th class="encounterTypeHeader">Blood tag</th>
-			<th class="encounterProviderHeader">Donor ID</th>
+			<th class="encounterProviderHeader">Patient ID</th>
 			<th class="encounterProviderHeader">Storage Date</th>
 			<th class="encounterProviderHeader">Expiry Date</th>
 		</tr>
@@ -202,20 +202,20 @@
 
 <script type="text/javascript">
 function loadUrlIntoEncounterPopup(title, urlToLoad) {
-        $("#displayEncounterPopupIframe").attr("src", urlToLoad);
-        $('#displayEncounterPopup')
+        jQuery("#displayEncounterPopupIframe").attr("src", urlToLoad);
+        jQuery('#displayEncounterPopup')
             .dialog('option', 'title', title)
-            .dialog('option', 'height', $(window).height() - 50) 
+            .dialog('option', 'height', jQuery(window).height() - 50) 
             .dialog('open');
 }
 
 
-$(document).ready(function() {
-	$('#tabs ul li a').click(function () {location.hash = $(this).attr('href');});
-	$('#tabs').tabs({
+jQuery(document).ready(function() {
+	jQuery('#tabs ul li a').click(function () {location.hash = jQuery(this).attr('href');});
+	jQuery('#tabs').tabs({
 	    
 	});
-	$('#displayEncounterPopup').dialog({
+	jQuery('#displayEncounterPopup').dialog({
 					title: 'dynamic',
 					autoOpen: false,
 					draggable: true,
@@ -230,8 +230,8 @@ $(document).ready(function() {
 
 function confirmDispose(id){  
 	if(confirm('Are you sure you want to dispose this blood unit?')){
-		$('#dispose').val(id);
-		$('#disposeForm').submit(); 
+		jQuery('#dispose').val(id);
+		jQuery('#disposeForm').submit(); 
 	}
 }; 
 

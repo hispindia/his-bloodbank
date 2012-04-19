@@ -1,23 +1,3 @@
-/**
- *  Copyright 2011 Society for Health Information Systems Programmes, India (HISP India)
- *
- *  This file is part of Bloodbank module.
- *
- *  Bloodbank module is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
-
- *  Bloodbank module is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Bloodbank module.  If not, see <http://www.gnu.org/licenses/>.
- *
- **/
-
 package org.openmrs.module.bloodbank.web.controller;
 
 import java.util.ArrayList;
@@ -56,11 +36,14 @@ public class ViewStockController{
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String processSubmit(@RequestParam(value="dispose", required=false) String bbid){
+		System.out.println("Entered FFFFFFFFFFFFFFFFFFFFFFF");
 		if (bbid != null){
+			System.out.println("Entered HHHHHHHHHHHHHHHHHHHHHH");
 			if(bbid != ""){
 				int id = Integer.valueOf(bbid);
 				BloodBankService bbs = Context.getService(BloodBankService.class);
 				BloodBank bb = bbs.getRecordById(id);
+				System.out.println("Dispose bb encounter: " + id);
 				log.info("Dispose bb encounter: " + id);
 				bb.setDisposed(true);
 				bbs.saveBloodBank(bb);
@@ -103,7 +86,7 @@ public class ViewStockController{
 		
 		for(BloodBank encounter : records){
 			
-			donorId.put(encounter.getPatient(), encounter.getPatient().getPatientIdentifier(Integer.valueOf(donorIdientifier)));
+			donorId.put(encounter.getPatient(), encounter.getPatient().getPatientIdentifier());
 				
 			if(encounter.getExpiryDate().before(new Date())){
 				encounter.setExpired(true);

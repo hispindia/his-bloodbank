@@ -16,9 +16,9 @@
 		return tester;
 	}
 	
-	$(document).ready(function(){		
-		$("#conceptPopup").autocomplete(getContextPath() + '/module/bloodbank/ajax/autocompleteConceptSearch.htm').result(function(event, item){window.parent.insertObs($('#conceptPopup').val(),'${type}',getConceptRequired()); tb_remove();});
-		$("#conceptPopup").focus();
+	jQuery(document).ready(function(){		
+		jQuery("#conceptPopup").autocomplete(getContextPath() + '/module/bloodbank/ajax/autocompleteConceptSearch.htm').result(function(event, item){window.parent.insertObs(jQuery('#conceptPopup').val(),'${type}',getConceptRequired()); tb_remove();});
+		jQuery("#conceptPopup").focus();
 	});
 </script>
 <form id="showPopup" name="showPopup">
@@ -41,7 +41,7 @@
 				</td>
 			</tr>
 		</table>
-		<input type="button" onClick="javascript:window.parent.insertObs($('#conceptPopup').val(),'${type}', getConceptRequired()); tb_remove();" value="Insert"/>
+		<input type="button" onClick="javascript:window.parent.insertObs(jQuery('#conceptPopup').val(),'${type}', getConceptRequired()); tb_remove();" value="Insert"/>
 		<input type="button" onClick="tb_remove();" value="Close"/>
 	</center>
 </form>

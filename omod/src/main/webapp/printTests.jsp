@@ -2,6 +2,8 @@
 	<head>
 
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ include file="includes/js_css.jsp" %>
+
 <openmrs:htmlInclude file="/openmrs.css" />
 <openmrs:htmlInclude file="/style.css" />
 <link type="text/css" rel="stylesheet"	href="${pageContext.request.contextPath}/moduleResources/bloodbank/styles/common.css" />
@@ -18,7 +20,7 @@
 	<thead><tr>
 		<th class="count">#</th>
 		<th class="encounterProviderHeader">Donor name:</th>
-		<th class="donorId">Patient ID</th>
+		<!-- <th class="donorId">Patient ID</th>-->
 		<th class="donorId">Donor ID</th>
 		<th>Blood Group:</th>
 		<th>HCV test result</th>

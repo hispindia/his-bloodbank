@@ -1,37 +1,23 @@
-/**
- *  Copyright 2011 Society for Health Information Systems Programmes, India (HISP India)
- *
- *  This file is part of Bloodbank module.
- *
- *  Bloodbank module is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
-
- *  Bloodbank module is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Bloodbank module.  If not, see <http://www.gnu.org/licenses/>.
- *
- **/
-
 package org.openmrs.module.bloodbank.web.controller.editor;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
+import org.openmrs.Form;
+import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.bloodbank.BloodBankService;
+import org.openmrs.module.bloodbank.model.BloodBank;
 import org.openmrs.module.bloodbank.model.BloodbankForm;
 //import org.openmrs.module.bloodbank.model.BloodbankTest;
 import org.openmrs.module.bloodbank.web.util.BloodbankUtil;
@@ -121,8 +107,8 @@ public class ShowFormController {
 			@RequestParam("encounterId") Integer encounterId, Model model) {
 		
 		Map<String, String> parameters = buildParameterList(request);
-		Encounter encounter = Context.getEncounterService().getEncounter(
-				encounterId);
+		Encounter encounter = Context.getEncounterService().getEncounter(encounterId);
+		Encounter e = Context.getEncounterService().getEncounter(305178);
 		if (encounter != null) {
 			for (String key : parameters.keySet()) {
 				Concept concept = BloodbankUtil.searchConcept(key);
@@ -131,12 +117,110 @@ public class ShowFormController {
 					encounter.addObs(obs);
 			}
 			Context.getEncounterService().saveEncounter(encounter);
+			for( String s : parameters.keySet()){
+				System.out.println(":"+s +":" + parameters.get(s));
+				if(s.equalsIgnoreCase("BB DONOR - DONATION TYPE")){
+					BloodBankService service = Context.getService(BloodBankService.class);
+					System.out.println("Getting Reccords for ENC"+encounter.getId());
+					BloodBank bld =  service.getRecordByTest(encounter);
+					BloodBank bld1 =  service.getRecordByTest(e);
+					System.out.println("Showing Value"+bld1.getDonorType());
+					System.out.println("Storing Value"+parameters.get(s));
+					bld.setDonorType(parameters.get(s).toString());
+					System.out.println(bld.getDonorType());
+					service.saveBloodBank(bld);
+				}
+					
+				
+			}
+			System.out.println("Encounter Name = "+encounter.getEncounterType().getName());
+			System.out.println("Encounter ID = "+ encounter.getEncounterId());
+			System.out.println("Encounter Type ID = "+ encounter.getEncounterType().getId());
+			String encName=new String("BBTESTENCOUNTER");
+			System.out.println("sadkgajkgkjdga---------------------------------------"+Integer.valueOf(Context.getAdministrationService().getGlobalProperty("bloodbank.test.enctype.id")));
+			if(encounter.getEncounterType().getId().toString().equalsIgnoreCase((Context.getAdministrationService().getGlobalProperty("bloodbank.test.enctype.id")))){
+				System.out.print("====lallu the 2nd====");
+				setTestValues(encounter,parameters);
+			}
+			if(encounter.getEncounterType().getId().toString().equalsIgnoreCase(Context.getAdministrationService().getGlobalProperty("bloodbank.result.enctype.id"))){
+				setResultValues(encounter,parameters);
+			}
 			model.addAttribute("status", "success");
+			
 			return "/module/bloodbank/editor/enterForm";
 		}
 		model.addAttribute("status", "fail");
 		return "/module/bloodbank/editor/enterForm";
 	}
+	
+	private void setTestValues(Encounter encounter,Map <String,String> parameters){
+		System.out.println("Entered Here");
+		BloodBankService service = Context.getService(BloodBankService.class);
+		System.out.println("eID"+encounter.getEncounterId());
+		BloodBank bld =  service.getRecordByTest(encounter);
+		System.out.println("Encounter Id = " + bld.getTest().getId());
+		bld.setTestComplete(true);
+		boolean flag = false;
+		Calendar currentDate = Calendar.getInstance();
+		
+		for (String key : parameters.keySet()) {
+			if(key.equalsIgnoreCase("blood typing")){
+				Concept concept = BloodbankUtil.searchConcept(parameters.get(key));
+				bld.setBloodGroup(concept);
+				System.out.println("Entered Here blood grup "+ concept);
+			}
+			System.out.println("Key = " + key + " Value" + parameters.get(key));
+			if(parameters.get(key).equalsIgnoreCase("yes")){
+				String keylist = "";
+				bld.setVoided(true);
+				for (String keyl : parameters.keySet())
+					if(parameters.get(keyl).equalsIgnoreCase("yes")){
+						keylist = keylist +","+ keyl;
+					}
+				bld.setVoidReason(keylist);
+				bld.setVoidedBy(Context.getUserContext().getAuthenticatedUser());
+				bld.setDateVoided(currentDate.getTime());
+				flag=true;
+				break;
+			}
+		}
+		if(flag==false){
+			bld.setStorageDate(currentDate.getTime());
+			currentDate.add(Calendar.MONTH, 3);
+			bld.setExpiryDate(currentDate.getTime());
+			//CURRENTLY STORING THE WRONG DATE
+			
+			Encounter enc=new Encounter();
+			enc.setCreator(Context.getAuthenticatedUser());
+			enc.setDateCreated(new java.util.Date());
+	        Location loc = Context.getLocationService().getLocation(Integer.valueOf(Context.getAdministrationService().getGlobalProperty("bloodbank.location.id")));
+	        enc.setLocation(loc);
+			enc.setPatient(encounter.getPatient());
+			enc.setPatientId(encounter.getPatient().getPatientId());
+			EncounterType encounterType =  Context.getEncounterService().getEncounterType(Integer.valueOf(Context.getAdministrationService().getGlobalProperty("bloodbank.result.enctype.id")));
+			enc.setEncounterType(encounterType);
+			Form form = Context.getFormService().getForm(Integer.valueOf(Context.getAdministrationService().getGlobalProperty("bloodbank.result.formId")));
+			enc.setVoided(false);
+			enc.setProvider(Context.getAuthenticatedUser().getPerson());
+			enc.setUuid(UUID.randomUUID().toString());
+			enc.setForm(form);
+			enc.setEncounterDatetime(new java.util.Date());
+			Context.getEncounterService().saveEncounter(enc);
+			bld.setBloodResult(enc);
+		}
+		service.saveBloodBank(bld);
+	}
+	
+	private void setResultValues(Encounter encounter,Map <String,String> parameters){
+		System.out.println("Entered Here");
+		BloodBankService service = Context.getService(BloodBankService.class);
+		BloodBank bld =  service.getRecordByResult(encounter);
+		System.out.println("Encounter Id = " + bld.getTest().getId());
+		bld.setBloodResultComplete(true);
+		service.saveBloodBank(bld);
+	}
+
+	
 	
 	@SuppressWarnings("rawtypes")
 	private Map<String, String> buildParameterList(HttpServletRequest request) {
@@ -180,12 +264,17 @@ public class ShowFormController {
 		
 		else if( concept.getDatatype().getName().equalsIgnoreCase("Date") )
 		{
-			obs.setValueDatetime(ConverttoDate(value));
+			if(!value.isEmpty()){
+				obs.setValueDatetime(ConverttoDate(value));
+			}
 		}
 		
 		else if (concept.getDatatype().getName().equalsIgnoreCase("Numeric"))
 		{
-			obs.setValueNumeric(new Double(value));
+			if(!value.isEmpty()){
+				obs.setValueNumeric(new Double(value));
+			}
+			
 		} else if (concept.getDatatype().getName().equalsIgnoreCase("Coded")) {
 			Concept answerConcept = BloodbankUtil.searchConcept(value);
 			obs.setValueCoded(answerConcept);
