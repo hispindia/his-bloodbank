@@ -120,15 +120,9 @@ CREATE TABLE if not exists `bb_blood_bank` (
 	<version>1.0.3</version>
 		<author>Sanchit,Apurv</author>
 		<date>26th September 2011</date>
-		<description> Add 'test_complete',questionaire_complete,bloodresult_complete,blood_group</description>
+		<description> Add FOREIGN KEY for blood_group</description>
 		<sql>
-			ALTER TABLE bb_blood_bank ADD questionnaire_complete bit(1) DEFAULT NULL;
-			ALTER TABLE bb_blood_bank ADD test_complete bit(1) DEFAULT NULL;
-			ALTER TABLE bb_blood_bank ADD blood_result_complete bit(1) DEFAULT NULL;
-			ALTER TABLE bb_blood_bank ADD blood_group int(11) DEFAULT NULL;			
-			
 			ALTER TABLE bb_blood_bank ADD CONSTRAINT `FK3C87C6C0A58AE42E` FOREIGN KEY (blood_group) REFERENCES concept(concept_id);
-			
 		</sql>
 	</diff>
 
