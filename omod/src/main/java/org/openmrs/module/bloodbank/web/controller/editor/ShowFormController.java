@@ -107,8 +107,8 @@ public class ShowFormController {
 			@RequestParam("encounterId") Integer encounterId, Model model) {
 		
 		Map<String, String> parameters = buildParameterList(request);
-		Encounter encounter = Context.getEncounterService().getEncounter(encounterId);
-		Encounter e = Context.getEncounterService().getEncounter(305178);
+		Encounter encounter = Context.getEncounterService().getEncounter(
+				encounterId);
 		if (encounter != null) {
 			for (String key : parameters.keySet()) {
 				Concept concept = BloodbankUtil.searchConcept(key);
@@ -117,22 +117,6 @@ public class ShowFormController {
 					encounter.addObs(obs);
 			}
 			Context.getEncounterService().saveEncounter(encounter);
-			for( String s : parameters.keySet()){
-				System.out.println(":"+s +":" + parameters.get(s));
-				if(s.equalsIgnoreCase("BB DONOR - DONATION TYPE")){
-					BloodBankService service = Context.getService(BloodBankService.class);
-					System.out.println("Getting Reccords for ENC"+encounter.getId());
-					BloodBank bld =  service.getRecordByTest(encounter);
-					BloodBank bld1 =  service.getRecordByTest(e);
-					System.out.println("Showing Value"+bld1.getDonorType());
-					System.out.println("Storing Value"+parameters.get(s));
-					bld.setDonorType(parameters.get(s).toString());
-					System.out.println(bld.getDonorType());
-					service.saveBloodBank(bld);
-				}
-					
-				
-			}
 			System.out.println("Encounter Name = "+encounter.getEncounterType().getName());
 			System.out.println("Encounter ID = "+ encounter.getEncounterId());
 			System.out.println("Encounter Type ID = "+ encounter.getEncounterType().getId());
@@ -171,13 +155,9 @@ public class ShowFormController {
 			}
 			System.out.println("Key = " + key + " Value" + parameters.get(key));
 			if(parameters.get(key).equalsIgnoreCase("yes")){
-				String keylist = "";
+				
 				bld.setVoided(true);
-				for (String keyl : parameters.keySet())
-					if(parameters.get(keyl).equalsIgnoreCase("yes")){
-						keylist = keylist +","+ keyl;
-					}
-				bld.setVoidReason(keylist);
+				bld.setVoidReason(key);
 				bld.setVoidedBy(Context.getUserContext().getAuthenticatedUser());
 				bld.setDateVoided(currentDate.getTime());
 				flag=true;

@@ -32,43 +32,26 @@ public class FindDonorController{
 	}
 	                            
 	@ModelAttribute("html")
-	public String populatePatientList(@RequestParam("donorName") String donorName ,
-									  @RequestParam("Counter") Integer Counter){
+	public String populatePatientList(@RequestParam("donorName") String donorName){
 		List<Patient> patientsList = Context.getPatientService().getPatients( donorName );
 
 		String patientIdientifier = Context.getAdministrationService().getGlobalProperty("bloodbank.patientIdTypeId");
-//		String donorIdientifier = Context.getAdministrationService().getGlobalProperty("bloodbank.donorIdTypeId");
+		String donorIdientifier = Context.getAdministrationService().getGlobalProperty("bloodbank.donorIdTypeId");
 		
 		Iterator<Patient> it = patientsList.iterator();
-		Integer Max = patientsList.size();
-		System.out.println("=========Received From Ajax"+Counter.toString());
-		if (Counter%10 != 0){
-			Counter = (Counter/10);
-			Counter = Counter * 10;
-		}
-		if( Counter == 0)
-			Counter = 20;
 		
-		int Clower = Counter - 20;
-		Clower = (Clower<0)? 0:Clower ;
-		System.out.println("=========Received From Ajax and changed "+Counter.toString()+" ,"+Clower+", "+Max);
-
 		String patientsHtml="";
-		Integer i = new Integer(0);
+		int counter = 0;
 		while(it.hasNext()){
 			Patient patient = (Patient) it.next();
-			if(i >= Clower &&  i < Counter){
-				BloodBankService bbs = (BloodBankService) Context.getService(BloodBankService.class);
-	//			System.out.println("Sending Patient Id:"+patient.getPatientId());
-				boolean existing  = bbs.isPatientDonor( patient.getPatientId() );
-				patientsHtml +="<tr class='patientData'><td>"+ patient.getPersonName() +" &nbsp</td><td>"+
-				(existing ? "<a href=\"showDonorEncounters.form?patientId=" + patient.getPatientId()+"\">"+patient.getPatientIdentifier(Integer.valueOf(patientIdientifier))+"</a></td>" : "Not A Donor &nbsp </td>");
-			}
-			if(i > Counter){
+			BloodBankService bbs = (BloodBankService) Context.getService(BloodBankService.class);
+			System.out.println("Sending Patient Id:"+patient.getPatientId());
+			boolean existing  = bbs.isPatientDonor( patient.getPatientId() );
+			patientsHtml +="<tr class='patientData'><td>"+ patient.getPersonName() +" &nbsp</td><td>"+
+			(existing ? "<a href=\"showDonorEncounters.form?patientId=" + patient.getPatientId()+"\">"+patient.getPatientIdentifier(Integer.valueOf(patientIdientifier))+"</a></td>" : "Not A Donor &nbsp </td>");
+			if(counter++ == 20){
 				break;
 			}
-			i++;
-			
 //			check if the patient is a donor
 //			redirect to show donor encounter page else show that he not a donor
 			/*
@@ -81,10 +64,9 @@ public class FindDonorController{
 			(pi!=null ? "N/A" : "<input  style='margin-top:12px;display: inline-table;' type='checkbox' name='useThisPat' id='useThisPat' onchange='confirmUse("+patient.getPatientId()+");' value='"+patient.getPatientId()+"' ><spring:message code='bloodbank.use.this'/></td></tr>");	
 			*/
 		}
-		Counter = i -1;
 		patientsHtml +="";
-		patientsHtml = Counter.toString()+"?"+ Max.toString() +"&"+ patientsHtml;
 		System.out.println("HTML:"+patientsHtml);
+		
 		if(patientsList.size()==0){
 			return "";
 		}else{

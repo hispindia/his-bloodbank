@@ -44,7 +44,7 @@ public class BloodBank implements Serializable{
 	private User questionnaireProvider;
 	
 	private Encounter test;
-		
+	
 	private Boolean testComplete;
 	
 	private User testProvider;
@@ -85,8 +85,7 @@ public class BloodBank implements Serializable{
 	
 	private String voidReason;
 
-	private String donorType; 
-
+	
     /**
 	 * @return the bloodBankId
 	 */
@@ -436,13 +435,6 @@ public class BloodBank implements Serializable{
     public void setVoidReason(String voidReason) {
     	this.voidReason = voidReason;
     }
-    
-    public String getDonorType(){
-    	return donorType;
-    }
-    
-    public void setDonorType(String donorType){
-    	this.donorType = donorType;
-    }
+
 
 }
