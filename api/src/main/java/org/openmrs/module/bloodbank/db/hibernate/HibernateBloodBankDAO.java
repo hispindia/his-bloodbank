@@ -197,7 +197,20 @@ public class HibernateBloodBankDAO implements BloodbankDAO {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String startDate = sdf.format(orderStartDate) + " 00:00:00";
 		String endDate = sdf.format(orderStartDate) + " 23:59:59";
-		OrderType orderType = Context.getOrderService().getOrderType(Integer.parseInt(Context.getAdministrationService().getGlobalProperty("registration.bloodbankOrderTypeId")));
+		OrderType orderType = null;// = Context.getOrderService().getOrderType(Integer.parseInt(Context.getAdministrationService().getGlobalProperty("registration.bloodbankOrderTypeId")));
+		
+		
+		String orderTypeName = Context.getAdministrationService().getGlobalProperty("bloodbank.orderTypeName");
+		List<OrderType> allOrderTypes = Context.getOrderService().getAllOrderTypes();
+		Iterator<OrderType> allOrderTypesIterator = allOrderTypes.iterator();
+		
+		while(allOrderTypesIterator.hasNext()){
+			OrderType orderTypeTemp=allOrderTypesIterator.next();
+			if (orderTypeTemp.getName().equals(orderTypeName)){
+				orderType = Context.getOrderService().getOrderType(orderTypeTemp.getId());
+			}
+		}
+		
 		System.out.println(orderType.getName());
 		criteria.add(Restrictions.eq("orderType", orderType));
 		SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(
