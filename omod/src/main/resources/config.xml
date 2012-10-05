@@ -18,6 +18,10 @@
 	<updateURL>https://</updateURL>
 	<!-- /Base Module Properties -->
 	
+	<require_modules>
+                  <require_module>org.openmrs.module.hospitalcore</require_module>
+    </require_modules>
+	
 	<require_version>1.8.0.11652</require_version>
 	
 	<!-- Extensions -->

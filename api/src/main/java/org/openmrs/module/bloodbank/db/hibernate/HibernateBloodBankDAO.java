@@ -40,6 +40,7 @@ import org.openmrs.module.bloodbank.db.BloodbankDAO;
 import org.openmrs.module.bloodbank.model.BloodBank;
 import org.openmrs.module.bloodbank.model.PreparedDonorId;
 import org.openmrs.module.bloodbank.model.BloodbankForm;
+import org.openmrs.module.hospitalcore.util.OrderUtil;
 
 /**
  * Hibernate implementation of services
@@ -201,15 +202,8 @@ public class HibernateBloodBankDAO implements BloodbankDAO {
 		
 		
 		String orderTypeName = Context.getAdministrationService().getGlobalProperty("bloodbank.orderTypeName");
-		List<OrderType> allOrderTypes = Context.getOrderService().getAllOrderTypes();
-		Iterator<OrderType> allOrderTypesIterator = allOrderTypes.iterator();
-		
-		while(allOrderTypesIterator.hasNext()){
-			OrderType orderTypeTemp=allOrderTypesIterator.next();
-			if (orderTypeTemp.getName().equals(orderTypeName)){
-				orderType = Context.getOrderService().getOrderType(orderTypeTemp.getId());
-			}
-		}
+	
+		orderType=OrderUtil.getOrderTypeByName(orderTypeName);
 		
 		System.out.println(orderType.getName());
 		criteria.add(Restrictions.eq("orderType", orderType));
