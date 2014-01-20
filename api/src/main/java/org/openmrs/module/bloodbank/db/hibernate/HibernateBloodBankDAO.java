@@ -205,7 +205,7 @@ public class HibernateBloodBankDAO implements BloodbankDAO {
 	
 		orderType=OrderUtil.getOrderTypeByName(orderTypeName);
 		
-		System.out.println(orderType.getName());
+//		System.out.println(orderType.getName());
 		criteria.add(Restrictions.eq("orderType", orderType));
 		SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(
 				"yyyy-MM-dd hh:mm:ss");

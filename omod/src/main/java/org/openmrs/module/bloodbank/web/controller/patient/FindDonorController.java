@@ -35,8 +35,8 @@ public class FindDonorController{
 	public String populatePatientList(@RequestParam("donorName") String donorName){
 		List<Patient> patientsList = Context.getPatientService().getPatients( donorName );
 
-		String patientIdientifier = Context.getAdministrationService().getGlobalProperty("bloodbank.patientIdTypeId");
-		String donorIdientifier = Context.getAdministrationService().getGlobalProperty("bloodbank.donorIdTypeId");
+//		String patientIdientifier = Context.getAdministrationService().getGlobalProperty("bloodbank.patientIdTypeId");
+//		String donorIdientifier = Context.getAdministrationService().getGlobalProperty("bloodbank.donorIdTypeId");
 		
 		Iterator<Patient> it = patientsList.iterator();
 		
@@ -45,10 +45,10 @@ public class FindDonorController{
 		while(it.hasNext()){
 			Patient patient = (Patient) it.next();
 			BloodBankService bbs = (BloodBankService) Context.getService(BloodBankService.class);
-			System.out.println("Sending Patient Id:"+patient.getPatientId());
+//			System.out.println("Sending Patient Id:"+patient.getPatientId()+","+patient.getUuid()+",");
 			boolean existing  = bbs.isPatientDonor( patient.getPatientId() );
 			patientsHtml +="<tr class='patientData'><td>"+ patient.getPersonName() +" &nbsp</td><td>"+
-			(existing ? "<a href=\"showDonorEncounters.form?patientId=" + patient.getPatientId()+"\">"+patient.getPatientIdentifier(Integer.valueOf(patientIdientifier))+"</a></td>" : "Not A Donor &nbsp </td>");
+			(existing ? "<a href=\"showDonorEncounters.form?patientId=" + patient.getPatientId()+"\">"+patient.getPatientIdentifier()+"</a></td>" : "Not A Donor &nbsp </td>");
 			if(counter++ == 20){
 				break;
 			}
@@ -65,7 +65,7 @@ public class FindDonorController{
 			*/
 		}
 		patientsHtml +="";
-		System.out.println("HTML:"+patientsHtml);
+//		System.out.println("HTML:"+patientsHtml);
 		
 		if(patientsList.size()==0){
 			return "";

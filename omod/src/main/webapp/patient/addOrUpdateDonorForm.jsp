@@ -13,6 +13,7 @@
 				<div>
 					<div style="margin-top:12px;"><spring:message code="bloodbank.donor.name"/></div>
 					<div style="margin-top:12px;display: inline-table;"><input type="text" id="donorName" name="donorName" value="" onblur="capitalize()" style="min-width:600px;"/></div>
+					<input id="donId" name="donId" type="hidden" value="${donorIdentifier }"></input>
 				</div>
 				<!-- 
 				<div style="margin-top:12px;"><spring:message code="bloodbank.donor.fatherhusbandname"/></div>
@@ -168,7 +169,7 @@ jQuery(document).ready(function(){
 	function validateId(){
 		if(jQuery("#existId").attr('value')=="yes"){
 			var newVal = jQuery("#donorPrepId").val();
-			jQuery("#donId").attr('value',newVal);
+			//jQuery("#donId").attr('value',newVal);
 			jQuery("#donIdShow").html(newVal); 
 			
   			 jQuery("#valid").html(ajax_ok);
