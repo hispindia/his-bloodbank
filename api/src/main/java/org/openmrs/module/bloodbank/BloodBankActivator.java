@@ -15,27 +15,56 @@ package org.openmrs.module.bloodbank;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.Activator;
+import org.openmrs.module.ModuleActivator;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
  */
-public class BloodBankActivator implements Activator {
+public class BloodBankActivator implements ModuleActivator {
 	
-	private Log log = LogFactory.getLog(this.getClass());
+private Log log = LogFactory.getLog(this.getClass());
 	
 	/**
 	 * @see org.openmrs.module.Activator#startup()
 	 */
 	public void startup() {
-		log.info("Starting Blood Bank");
+		log.info("Starting BloodBank Module");		
 	}
 	
 	/**
 	 * @see org.openmrs.module.Activator#shutdown()
 	 */
 	public void shutdown() {
-		log.info("Shutting down Blood Bank");
+		log.info("Shutting down BloodBank Module");
+	}
+
+	public void contextRefreshed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void started() {
+		//Maintainer.maintain();	
+	}
+
+	public void stopped() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void willRefreshContext() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void willStart() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void willStop() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

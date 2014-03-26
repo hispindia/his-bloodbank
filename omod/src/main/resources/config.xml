@@ -22,7 +22,7 @@
                   <require_module>org.openmrs.module.hospitalcore</require_module>
     </require_modules>
 	
-	<require_version>1.8.0.11652</require_version>
+	<require_version>1.9.7</require_version>
 	
 	<!-- Extensions -->
 	<extension>
@@ -237,9 +237,7 @@
 	<!-- /Internationalization -->
 	
 	<mappingFiles>
-		BloodBank.hbm.xml
-		BloodbankForm.hbm.xml
-		generatedids.hbm.xml
+		
 	</mappingFiles>
 	
 </module>
