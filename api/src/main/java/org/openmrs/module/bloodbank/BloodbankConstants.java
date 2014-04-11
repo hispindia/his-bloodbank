@@ -20,7 +20,8 @@ package org.openmrs.module.bloodbank;
  */
 public class BloodbankConstants {
 	
-	public static final Integer BLOODGROUPCONCEPTID = 4280;
+	
+	public static final String BLOODGROUPS_CONCEPT_ID = "bb.bloodgroups.concept";
 	
 	public static final Integer PAGESIZE = 20;
 
