@@ -53,6 +53,6 @@ public class BloodBankHeader extends LinkExt {
 	 */
 	@Override
 	public String getUrl() {
-		return "module/bloodbank/main.form";
+		return "module/bloodbank/receiveBlood.form";
 	}
 }
