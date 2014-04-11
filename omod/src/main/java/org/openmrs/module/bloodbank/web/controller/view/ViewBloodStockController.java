@@ -26,7 +26,10 @@ public class ViewBloodStockController {
 
 	@RequestMapping(value="/module/bloodbank/viewBloodStockBalance.form", method = RequestMethod.GET)
 	public String addBloodStockReceiptDescriptionForm(Model model) {
-		 Concept bloodGroupContainerConcept = Context.getConceptService().getConcept(BloodbankConstants.BLOODGROUPCONCEPTID);
+		Integer bloodGroupContainerConceptId = Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
+				BloodbankConstants.BLOODGROUPS_CONCEPT_ID));
+		
+		 Concept bloodGroupContainerConcept = Context.getConceptService().getConcept(bloodGroupContainerConceptId);
 			
 		 Collection<ConceptAnswer> bloodGroups =  bloodGroupContainerConcept.getAnswers();
 			
@@ -38,7 +41,10 @@ public class ViewBloodStockController {
 	@RequestMapping(value = "/module/bloodbank/bloodStockSummary.form", method = RequestMethod.GET)
 	public String viewBloodStockSummary(HttpServletRequest request,Model model) {
 		Map<String,Integer> bloodGroupStockCount = new HashMap<String,Integer>();
-		 Concept bloodGroupContainerConcept = Context.getConceptService().getConcept(BloodbankConstants.BLOODGROUPCONCEPTID);		
+		Integer bloodGroupContainerConceptId = Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
+				BloodbankConstants.BLOODGROUPS_CONCEPT_ID));
+		
+		 Concept bloodGroupContainerConcept = Context.getConceptService().getConcept(bloodGroupContainerConceptId);		
 		 Collection<ConceptAnswer> bloodGroups =  bloodGroupContainerConcept.getAnswers();
 			
 		 BloodStockService bloodStockService = Context.getService(BloodStockService.class);

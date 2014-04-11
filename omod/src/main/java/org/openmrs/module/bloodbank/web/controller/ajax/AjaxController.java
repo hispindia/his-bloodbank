@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller("AjaxGlobalController")
+@Controller("AjaxGlobalControllerBB")
 public class AjaxController {
 	@RequestMapping("/module/bloodbank/checkSession.form")
 	public String checkSession(HttpServletRequest request,Model model) {

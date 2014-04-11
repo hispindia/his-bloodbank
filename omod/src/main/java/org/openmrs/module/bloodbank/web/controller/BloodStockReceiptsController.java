@@ -62,7 +62,10 @@ public class BloodStockReceiptsController {
 		model.addAttribute("bloodStocks", bloodStocks);
 		
 		}	
-		 Concept bloodGroupContainerConcept = Context.getConceptService().getConcept(BloodbankConstants.BLOODGROUPCONCEPTID);
+		Integer bloodGroupContainerConceptId = Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
+				BloodbankConstants.BLOODGROUPS_CONCEPT_ID));
+			
+		 Concept bloodGroupContainerConcept = Context.getConceptService().getConcept(bloodGroupContainerConceptId);
 		 Collection<ConceptAnswer> bloodGroups =  bloodGroupContainerConcept.getAnswers();
 		model.addAttribute("bloodGroups", bloodGroups);
 		model.addAttribute("receiptId", receiptId);
