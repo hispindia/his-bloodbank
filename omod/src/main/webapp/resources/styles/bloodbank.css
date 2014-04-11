@@ -1,0 +1,9 @@
+table.summary{
+    width:350px;
+    border-collapse:separate;
+    empty-cells:hide;
+}
+td.summary{
+    padding:5px;
+    
+}

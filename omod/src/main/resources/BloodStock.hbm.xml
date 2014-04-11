@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.bloodbank.model">
+
+	<class name="BloodStock" table="bloodbank_bloodstock" batch-size="500">
+
+		<id name="bloodStockId" type="int" column="bloodstock_id"
+			unsaved-value="0">
+				<generator class="native" />
+		</id>
+		<many-to-one name="bloodGroupConcept" column="bloodgroup_concept_id" class="org.openmrs.Concept" />
+		<property name="donorName" column="donor_name" />
+		<property name="product" column="product" />
+		<property name="packNo" column="pack_number" length="255" />
+		<property name="discarded" column="discarded" type="boolean" />
+		<property name="receiptDate" column="receipt_date"  type="java.util.Date" />
+		<property name="expiryDate" column="expiry_date"  type="java.util.Date" />
+		
+		
+	</class>
+</hibernate-mapping>

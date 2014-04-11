@@ -13,5 +13,121 @@
 			   calling this script
 	</help>
 	
+<diff>
+		<version>1.1</version>
+		<author>harsh atal</author>
+		<date>03-April-2014</date>
+		<description>
+			Creates -
+			bloodstock: desc
+			bloodstock receipt: desc
+		</description>
+		<sql>
+	
+<!--	CREATE
+			TABLE IF NOT EXISTS `bloodbank_bloodgroups` (
+			`bloodgroup_id`
+			INT(11) NOT NULL AUTO_INCREMENT,
+			`name` VARCHAR(255) DEFAULT
+			NULL,
+			`description` VARCHAR(255) DEFAULT NULL,
+			`created_by` INT(11) DEFAULT
+			NULL,
+			`created_on` DATETIME DEFAULT NULL,
+			PRIMARY KEY (`bloodgroup_id`),	
+			CONSTRAINT
+			`fk_created_by_user`
+			FOREIGN
+			KEY (`created_by`) REFERENCES `users`
+			(`user_id`))
+				ENGINE=INNODB DEFAULT CHARSET=utf8;
+	
+	
+	CREATE
+			TABLE IF NOT EXISTS `bloodbank_bloodstock` (
+			`bloodstock_id`
+			INT(11) NOT NULL AUTO_INCREMENT,
+			`bloodgroup_concept_id`
+			INT(11) NOT NULL ,
+			`product` VARCHAR(255) DEFAULT NULL,
+			`receipt_date` DATETIME NOT NULL,
+			`expiry_date` DATETIME NOT NULL,
+			`donor_name` VARCHAR(255) NOT NULL,
+			`pack_number` VARCHAR(255) NOT NULL,
+			`created_by` INT(11) DEFAULT
+			NULL,
+			`created_on` DATETIME NOT NULL,
+			discarded BOOLEAN NOT NULL DEFAULT FALSE,
+			PRIMARY KEY (`bloodstock_id`),
+			CONSTRAINT
+			FOREIGN KEY (`created_by`) REFERENCES `users`
+			(`user_id`),
+			CONSTRAINT
+			FOREIGN
+			KEY (`bloodgroup_concept_id`) REFERENCES `concept`
+			(`concept_id`)
+			)
+				ENGINE=INNODB DEFAULT CHARSET=utf8;	
+			
+		
+	CREATE
+			TABLE IF NOT EXISTS `bloodbank_bloodstock_receipt` (
+			`receipt_id`
+			INT(11) NOT NULL AUTO_INCREMENT,
+			`bloodstock_id`
+			INT(11) NOT NULL ,
+			`description` VARCHAR(255) DEFAULT NULL,
+			`created_by` INT(11) DEFAULT NULL,
+			`created_on` DATETIME NOT NULL,
+			PRIMARY KEY (`receipt_id`,`bloodstock_id`),
+			CONSTRAINT
+			 FOREIGN KEY (`created_by`) REFERENCES `users`
+			(`user_id`),
+			 FOREIGN KEY (`bloodstock_id`) REFERENCES `bloodbank_bloodstock`
+			(`bloodstock_id`)
+			)
+				ENGINE=INNODB DEFAULT CHARSET=utf8;	
+	
+		</sql>
+		-->
+		
+CREATE
+			TABLE IF NOT EXISTS `bloodbank_bloodstock` (
+			`bloodstock_id`
+			INT(11) NOT NULL AUTO_INCREMENT,
+			`bloodgroup_concept_id`
+			INT(11) NOT NULL ,
+			`product` VARCHAR(255) DEFAULT NULL,
+			`receipt_date` DATETIME NOT NULL,
+			`expiry_date` DATETIME NOT NULL,
+			`donor_name` VARCHAR(255) NOT NULL,
+			`pack_number` VARCHAR(255) NOT NULL,
+			`discarded` BOOLEAN NOT NULL DEFAULT FALSE,
+			`receipt_id` INT(11)  DEFAULT NULL,
+			PRIMARY KEY (`bloodstock_id`),
+			CONSTRAINT
+			FOREIGN
+			KEY (`bloodgroup_concept_id`) REFERENCES `concept`
+			(`concept_id`)
+			)
+				ENGINE=INNODB DEFAULT CHARSET=utf8;	
+		
+	CREATE
+			TABLE IF NOT EXISTS `bloodbank_bloodstock_receipt` (
+			`receipt_id`
+			INT(11) NOT NULL AUTO_INCREMENT,
+			`description` VARCHAR(255) DEFAULT NULL,
+			`created_by` INT(11) DEFAULT NULL,
+			`created_on` DATETIME NOT NULL,
+			PRIMARY KEY (`receipt_id`),
+			CONSTRAINT
+			 FOREIGN KEY (`created_by`) REFERENCES `users`
+			(`user_id`)
+			)
+				ENGINE=INNODB DEFAULT CHARSET=utf8;	
+	
+		</sql>
+		
+	</diff>
 
 </sqldiff>

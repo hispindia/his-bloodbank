@@ -14,17 +14,25 @@
 package org.openmrs.module.bloodbank.web.controller;
 
 
+import java.util.Collection;
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.bloodbank.BloodStockReceiptService;
+import org.openmrs.module.bloodbank.model.BloodStockReceipt;
+import org.openmrs.module.bloodbank.util.DateUtils;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 
 @Controller
-@RequestMapping("/module/bloodbank/main.form")
+@RequestMapping("/module/bloodbank/receiveBlood.form")
 public class BloodBankMainFormController {
 	
 	/** Logger for this class and subclasses */
@@ -32,8 +40,31 @@ public class BloodBankMainFormController {
 	
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String main(Model model){
-		return "/module/bloodbank/mainForm";
+	public String main(@RequestParam(value="description",required=false)  String description,
+			@RequestParam(value="fromDate",required=false)  String fromDateStr,
+			@RequestParam(value="toDate",required=false)  String toDateStr,
+			Model model){
+		BloodStockReceiptService bloodStockReceiptService = Context.getService(BloodStockReceiptService.class);
+		Collection<BloodStockReceipt> bloodStockReceipts = null;
+	System.out.println(description+"---"+fromDateStr);
+	if (description==null){
+		 bloodStockReceipts = bloodStockReceiptService.listAll();
+	}else {
+		Date fromDate =null;
+		Date toDate = null;
+		
+		if (!fromDateStr.isEmpty()){
+		fromDate = DateUtils.getDateFromStr(fromDateStr);
+		}
+		if (!toDateStr.isEmpty()){
+		toDate = DateUtils.getDateFromStr(toDateStr);
+		}
+		
+		bloodStockReceipts = bloodStockReceiptService.searchBloodStockReceipt(description,fromDate,toDate);
+	}
+		
+		model.addAttribute("receipts", bloodStockReceipts);
+		return "/module/bloodbank/receiveBlood";
 	}
 	
 }
