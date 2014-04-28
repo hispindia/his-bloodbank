@@ -10,18 +10,21 @@
 <script type="text/javascript">
 jQuery(document).ready(function() {
 	
-	jQuery("#receiptDate").change(function() {
+	jQuery("#dateOfReceipt").change(function() {
+		VALIDATION.checkRecieptDate();
+	});
+	jQuery("#dateOfExpiry").change(function() {
 		VALIDATION.checkRecieptDate();
 	});
 	});
 
 VALIDATION={
 	checkRecieptDate : function() {
-		var recieptDate = new Date(STRING.convertDateFormat(jQuery('#receiptDate').val()));
-		var expiryDate = new Date(STRING.convertDateFormat(jQuery('#dateExpiry').val()));
+		var recieptDate = new Date(STRING.convertDateFormat(jQuery('#dateOfReceipt').val()));
+		var expiryDate = new Date(STRING.convertDateFormat(jQuery('#dateOfExpiry').val()));
 
 		if (recieptDate > expiryDate){
-			jQuery('#receiptDate').val("");
+			jQuery('#dateOfReceipt').val("");
 			alert("You can not receipt an expired drug");
 		}
 	}
@@ -35,11 +38,6 @@ VALIDATION={
 <form method="post" id="receiptBloodStockReceipt">
 <input hidden type="numeric" id="receiptId" name="receiptId" value = "${receiptId}"  />
 
-<c:if  test="${not empty errors}">
-<c:forEach items="${errors}" var="error">
-	<span class="error"><spring:message code="${error}" /></span>
-</c:forEach>
-</c:if>
 <br/>
 <table width="100%">
  <tr>
@@ -91,7 +89,7 @@ VALIDATION={
 </table>
 <br/>
 <input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.receiveblood.addToSlip"/>">
-<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.receiveblood.back"/>" onclick="ACT.back();">
+<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.back"/>" onclick="BloodBank.clearBloodReceipt(${receiptId});">
 </form>
 </div>
 </div>

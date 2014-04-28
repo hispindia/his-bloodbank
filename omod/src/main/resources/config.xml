@@ -239,6 +239,7 @@
 	<mappingFiles>
 		BloodStock.hbm.xml
 		BloodStockReceipt.hbm.xml
+		IssuedBloodStock.hbm.xml
 	</mappingFiles>
 	
 </module>

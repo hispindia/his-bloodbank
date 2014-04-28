@@ -126,6 +126,25 @@ CREATE
 			)
 				ENGINE=INNODB DEFAULT CHARSET=utf8;	
 	
+	CREATE
+			TABLE IF NOT EXISTS `bloodbank_issued_bloodstock` (
+			`bloodstock_id` INT(11) NOT NULL ,
+			`patient_id` INT(11) NOT NULL ,
+			`crossmatching_result` BOOLEAN NOT NULL DEFAULT FALSE,
+			`comment` VARCHAR(255) DEFAULT NULL,	
+			`created_by` INT(11) DEFAULT NULL,
+			`created_on` DATETIME NOT NULL,
+			PRIMARY KEY (`bloodstock_id`,`patient_id`),
+			CONSTRAINT
+			 FOREIGN KEY (`bloodstock_id`) REFERENCES `bloodbank_bloodstock`
+			(`bloodstock_id`),
+			 FOREIGN KEY (`patient_id`) REFERENCES `patient`
+			(`patient_id`),
+			 FOREIGN KEY (`created_by`) REFERENCES `users`
+			(`user_id`)
+			)
+				ENGINE=INNODB DEFAULT CHARSET=utf8;	
+	
 		</sql>
 		
 	</diff>

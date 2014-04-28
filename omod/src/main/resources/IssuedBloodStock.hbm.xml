@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.bloodbank.model">
+
+	<class name="IssuedBloodStock" table="bloodbank_issued_bloodstock" batch-size="500">
+	<composite-id>
+		<key-many-to-one  name="bloodStock" column="bloodstock_id" class="org.openmrs.module.bloodbank.model.BloodStock"/>
+		<key-many-to-one name="patient" column="patient_id" class = "org.openmrs.Patient"/>	
+	</composite-id>
+		<property name="comment" column="comment" />
+		<property name="createdOn" column="created_on"  type="java.util.Date" />
+		<many-to-one name="createdBy" column="created_by"  class="org.openmrs.User"/>
+		
+	</class>
+</hibernate-mapping>

@@ -1,6 +1,8 @@
 package org.openmrs.module.bloodbank.web.controller.view;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -70,7 +72,12 @@ public class ViewBloodStockController {
 
 		 BloodStockService bloodStockService = Context.getService(BloodStockService.class);
 		 Collection<BloodStock> bloodStocks = bloodStockService.getBloodStocksByBloodGroup(bloodGroupConcept);
-		model.addAttribute("bloodStocks", bloodStocks);
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, 3);
+		
+		 model.addAttribute("bloodStocks", bloodStocks);
+		model.addAttribute("today", new Date());
+		model.addAttribute("todayPlus3Days", calendar.getTime());
 		return "/module/bloodbank/view/viewBloodGroupStock";
 	}
 	@RequestMapping(value = "/module/bloodbank/viewExpiredBloodStockBalance.form", method = RequestMethod.GET)

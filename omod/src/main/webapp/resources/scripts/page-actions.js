@@ -8,8 +8,10 @@ var EVT =
 		 */
 		var enableCheck = true;
 		var pageId = jQuery("form").attr("id");
+		
 		if(enableCheck && jQuery("form").attr("id") != undefined && pageId != null && pageId != undefined && eval("CHECK." + pageId))
 		{
+		
 			eval("CHECK." + jQuery("form").attr("id") + "()");
 		}
 		
@@ -348,14 +350,31 @@ var CHECK =
 					}
 				});
 	},
-	formCreateAccount : function()
+	receiptBloodStockReceipt : function()
 	{
-		var validator = jQuery("#formCreateAccount").validate(
+		var validator = jQuery("#receiptBloodStockReceipt").validate(
 				{
 					event : "blur",
 					rules : 
 					{
-						"name" : { required : true}
+						"product" : { required : true},
+						"packNo" : { required : true},
+						"donorName" : { required : true},
+						"bloodGroup" : { required : true},
+						"dateOfReceipt" : { required : true},
+						"dateOfExpiry" : 	{ required : true}
+					}
+				});
+	},
+	issueBloodForm :function()
+	{
+		var validator = jQuery("#issueBloodForm").validate(
+				{
+					event : "blur",
+					rules : 
+					{
+						"result" : { required : true},
+						
 					}
 				});
 	},

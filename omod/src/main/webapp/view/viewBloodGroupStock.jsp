@@ -19,7 +19,7 @@
 	<c:choose>
 	<c:when test="${not empty bloodStocks}">
 	<c:forEach items="${bloodStocks}" var="bloodStock" varStatus="varStatus">
-	<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
+	<tr class='${ bloodStock.expiryDate <= todayPlus3Days && bloodStock.expiryDate >= today? "expired" : varStatus.index % 2 == 0 ? "oddRow" : "evenRow"  } '>
 		<td><c:out value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }"/></td>
 		<td>${bloodStock.bloodGroupConcept.name} </td>	
 		<td>${bloodStock.product}</td>

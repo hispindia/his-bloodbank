@@ -50,7 +50,7 @@ jQuery(document).ready(function() {
 	
 </div>
 <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.print"/>" onClick="RECEIPT.printDiv();" />
-<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.receiveblood.back"/>" onclick="ACT.back();">
+<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.back"/>" onclick="ACT.back();">
 
 <!-- PRINT DIV 
 <div id="printDiv" style="display: none; ">

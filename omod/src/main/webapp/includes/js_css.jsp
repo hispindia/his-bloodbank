@@ -16,5 +16,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/jquery.PrintArea.js"></script>
 
 <script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/common-utils.js" ></script>
+<script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/bloodbank.js" ></script>
 <script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/page-actions.js" ></script>
 <script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/page-utils.js" ></script>

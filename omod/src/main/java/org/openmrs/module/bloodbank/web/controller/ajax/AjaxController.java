@@ -1,6 +1,7 @@
 package org.openmrs.module.bloodbank.web.controller.ajax;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -10,17 +11,26 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
+import org.openmrs.Patient;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.db.hibernate.PatientSearchCriteria;
 import org.openmrs.module.bloodbank.BloodStockReceiptService;
 import org.openmrs.module.bloodbank.BloodStockService;
 import org.openmrs.module.bloodbank.BloodbankConstants;
+import org.openmrs.module.bloodbank.IssuedBloodStockService;
 import org.openmrs.module.bloodbank.model.BloodStock;
 import org.openmrs.module.bloodbank.model.BloodStockReceipt;
+import org.openmrs.module.bloodbank.model.IssuedBloodStock;
+import org.openmrs.reporting.PatientSearch;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import antlr.collections.List;
 
 @Controller("AjaxGlobalControllerBB")
 public class AjaxController {
@@ -58,6 +68,8 @@ public class AjaxController {
 		BloodStockReceipt bloodStockReceipt =bloodStockReceiptService.getBloodStockReceiptFromId(Integer.parseInt(receiptId));
 		bloodStockReceipt.setDescription(description);
 		bloodStockReceiptService.saveBloodStockreceipt(bloodStockReceipt);
+		model.addAttribute("url", "/module/bloodbank/bloodStockReceipts.form");
+		
 		return "/module/bloodbank/thickbox/success";
 	}
 	
@@ -65,7 +77,7 @@ public class AjaxController {
 	public String showDetailBloodStock(@RequestParam(value="receiptId",required=false)  Integer receiptId,
 			Model model){
 		
-			BloodStockReceiptService bloodStockReceiptService = (BloodStockReceiptService) Context.getService(BloodStockReceiptService.class);;
+			BloodStockReceiptService bloodStockReceiptService = (BloodStockReceiptService) Context.getService(BloodStockReceiptService.class);
 			BloodStockReceipt bloodStockReceipt =bloodStockReceiptService.getBloodStockReceiptFromId(receiptId);
 				 System.out.println("================"+bloodStockReceipt);
 		 Set<BloodStock> bloodStocks =  bloodStockReceipt.getBloodStocks();	
@@ -73,5 +85,100 @@ public class AjaxController {
 		model.addAttribute("bloodStocks", bloodStocks);
 		model.addAttribute("receiptId", receiptId);
 		return "/module/bloodbank/showBloodStockReceiptDetailsForm";
+	}
+	
+	
+	@RequestMapping(value="/module/bloodbank/showPatientSearchForm.form",method=RequestMethod.GET)
+	public String showPatientSearchForm(@RequestParam(value="nameOrId",required=false)  String nameOrId,
+			Model model){
+		PatientService patientService = (PatientService) Context.getService(PatientService.class);
+		Collection<Patient> patients = patientService.getPatients(nameOrId);
+		System.out.println("patientssize============="+patients.size());
+		model.addAttribute("patients", patients);
+		return "/module/bloodbank/showPatientSearchForm";
+	}
+	
+	@RequestMapping(value="/module/bloodbank/issueBloodToPatient.form",method=RequestMethod.GET)
+	public String issueBloodToPatient(@RequestParam(value="patientId",required=false)  String patientId,
+			Model model){
+		PatientService patientService = (PatientService) Context.getService(PatientService.class);
+		Patient patient = patientService.getPatient(Integer.parseInt(patientId));
+		Integer bloodGroupContainerConceptId = Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
+				BloodbankConstants.BLOODGROUPS_CONCEPT_ID));
+			
+		 Concept bloodGroupContainerConcept = Context.getConceptService().getConcept(bloodGroupContainerConceptId);
+		 Collection<ConceptAnswer> bloodGroups =  bloodGroupContainerConcept.getAnswers();
+		model.addAttribute("bloodGroups", bloodGroups);
+	
+		model.addAttribute("patient", patient);
+		return "/module/bloodbank/issueBloodToPatient";
+	}
+	@RequestMapping(value="/module/bloodbank/issueBlood.form",method=RequestMethod.GET)
+	public String issueBlood(@RequestParam(value="patientId",required=false)  String patientId,
+			@RequestParam(value="bloodStockId",required=false)  String bloodStockId,
+			Model model){
+		
+		
+		model.addAttribute("bloodStockId", bloodStockId);
+		model.addAttribute("patientId", patientId);
+		return "/module/bloodbank/issueBloodForm";
+	}
+	@Transactional
+	@RequestMapping(value="/module/bloodbank/issueBlood.form",method=RequestMethod.POST)
+	public String issueBloodPost(@RequestParam(value="patientId",required=false)  String patientId,
+								@RequestParam(value="bloodStockId",required=false)  String bloodStockId,
+								HttpServletRequest request,Model model){
+		
+		String comment = request.getParameter("comment");
+		String crossmatchingResult = request.getParameter("result");
+		IssuedBloodStockService issueBloodStockService = (IssuedBloodStockService) Context.getService(IssuedBloodStockService.class);
+		PatientService patientService = (PatientService) Context.getService(PatientService.class);
+		BloodStockService bloodStockService =(BloodStockService)  Context.getService(BloodStockService.class);
+		BloodStock bloodStock = bloodStockService.getBloodStockById(Integer.parseInt(bloodStockId));
+		
+		IssuedBloodStock issuedBloodStock = new IssuedBloodStock();
+		
+		issuedBloodStock.setBloodStock(bloodStock);
+		issuedBloodStock.setPatient(patientService.getPatient(Integer.parseInt(patientId)));
+		issuedBloodStock.setCreatedBy(Context.getAuthenticatedUser());
+		issuedBloodStock.setComment(comment);
+		issuedBloodStock.setCreatedOn(new Date());
+		
+		if (crossmatchingResult.equalsIgnoreCase("Positive"))
+			issuedBloodStock.setCrossmatchingResult(true);
+		else issuedBloodStock.setCrossmatchingResult(false);
+		
+		issueBloodStockService.saveIssuedBloodStock(issuedBloodStock);
+		bloodStock.setDiscarded(true);
+		model.addAttribute("url", "/module/bloodbank/viewIssueBloodToPatient.form");
+		
+		return "/module/bloodbank/thickbox/success";
+	}
+	@RequestMapping(value="/module/bloodbank/getBloodStocksByBloodGroup.form",method=RequestMethod.GET)
+	public String getBloodStocksByBloodGroup(@RequestParam(value="bloodGroupId",required=false)  String bloodGroupId,
+			@RequestParam(value="patientId",required=false)  String patientId,
+			Model model){
+		BloodStockService bloodStockService = Context.getService(BloodStockService.class);
+		Concept bloodGroup = Context.getConceptService().getConcept(bloodGroupId);		
+			
+		 Collection<BloodStock> bloodStocks =bloodStockService.getBloodStocksByBloodGroup(bloodGroup);
+			model.addAttribute("bloodStocks", bloodStocks);
+			model.addAttribute("patientId", patientId);
+		 return "/module/bloodbank/availableBloodStockListAjax";
+	}
+
+	@RequestMapping(value="/module/bloodbank/clearBloodStockReceipt.form",method=RequestMethod.GET)
+	public String clearBloodStockReceipt(@RequestParam(value="receiptId",required=false)  String receiptId,
+			Model model){
+		if (!receiptId.equalsIgnoreCase("-1")){
+		BloodStockReceiptService bloodReceiptService = Context.getService(BloodStockReceiptService.class);
+		BloodStockService bloodStockService = Context.getService(BloodStockService.class);
+	BloodStockReceipt bloodStockReceipt = bloodReceiptService.getBloodStockReceiptFromId(Integer.parseInt(receiptId));
+	
+	Collection<BloodStock> bloodStocks = bloodStockReceipt.getBloodStocks();
+	bloodStockService.deleteBloodStocks(bloodStocks);
+	bloodReceiptService.deleteReceipt(bloodStockReceipt);
+		}
+		 return "redirect:/module/bloodbank/receiveBlood.form?";
 	}
 }

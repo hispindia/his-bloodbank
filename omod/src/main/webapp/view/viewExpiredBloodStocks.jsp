@@ -5,7 +5,11 @@
 <%@ include file="../includes/nav.jsp" %>
 
 <script type="text/javascript">
-
+function warning(bloodStockId){
+if(window.confirm("Are you sure?")){
+	ACT.go("discard.form?bloodStockId="+bloodStockId);
+	}else{ return false;}
+}
 </script>
 <b class="boxHeader">#</b> 
  <table class="box" width="100%" cellpadding="5" cellspacing="0">
@@ -30,7 +34,7 @@
 		<td><openmrs:formatDate date="${bloodStock.expiryDate}" type="textbox"/></td>
 		<td>${bloodStock.donorName}</td>
 		<td>${bloodStock.packNo}</td>
-		<td><a href="discard.form?bloodStockId=${bloodStock.bloodStockId}"><spring:message code="bloodbank.discard"/></a></td>
+		<td><a href="#" onclick="warning(${bloodStock.bloodStockId})"><spring:message code="bloodbank.discard" /></a></td>
 		</tr>
 	</c:forEach>
 	
