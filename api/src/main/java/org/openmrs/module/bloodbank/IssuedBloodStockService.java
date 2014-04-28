@@ -19,25 +19,20 @@ import java.util.List;
 import org.openmrs.Concept;
 import org.openmrs.api.APIException;
 import org.openmrs.module.bloodbank.model.BloodStock;
+import org.openmrs.module.bloodbank.model.IssuedBloodStock;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 
  */
 @Transactional
-public interface BloodStockService {
+public interface IssuedBloodStockService {
 	
 	@Transactional(readOnly = true)
-	public List<BloodStock> listAllBloodStocks() throws APIException;
+	public List<IssuedBloodStock> listAllIssuedBloodStocks() throws APIException;
 
-	public BloodStock saveBloodStock(BloodStock bloodstock) throws APIException;
+	public IssuedBloodStock saveIssuedBloodStock(IssuedBloodStock issuedBloodstock) throws APIException;
 
-	public Collection<BloodStock> getBloodStocksByBloodGroup(
-			Concept bloodGroup);
 
-	public Collection<BloodStock> getNonDiscardedExpiredBloodStocks();
-
-	public BloodStock getBloodStockById(int bloodStockId);
-
-	public void deleteBloodStocks(Collection<BloodStock> bloodStocks);
+	
 }

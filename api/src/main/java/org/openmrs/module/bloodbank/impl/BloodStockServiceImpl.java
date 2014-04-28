@@ -44,4 +44,9 @@ public class BloodStockServiceImpl implements BloodStockService{
 		// TODO Auto-generated method stub
 		return dao.getBloodStockById(bloodStockId);
 	}
+
+
+	public void deleteBloodStocks(Collection<BloodStock> bloodStocks) {
+	dao.deleteBloodStocks(bloodStocks);
+	}
 }

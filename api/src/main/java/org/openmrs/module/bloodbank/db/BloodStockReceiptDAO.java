@@ -18,5 +18,7 @@ public interface BloodStockReceiptDAO {
 	Collection<BloodStockReceipt> searchBloodStockReceipt(String description,
 			Date fromDate, Date toDate);
 
+	void deleteReceipt(BloodStockReceipt receipt);
+
 	
 }

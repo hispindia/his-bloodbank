@@ -18,4 +18,6 @@ public interface BloodStockDAO {
 
 	BloodStock getBloodStockById(int bloodStockId);
 
+	void deleteBloodStocks(Collection<BloodStock> bloodStocks);
+
 }

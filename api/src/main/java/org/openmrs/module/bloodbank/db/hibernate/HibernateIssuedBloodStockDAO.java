@@ -22,16 +22,18 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Concept;
 import org.openmrs.module.bloodbank.db.BloodStockDAO;
-import org.openmrs.module.bloodbank.db.BloodStockReceiptDAO;
+import org.openmrs.module.bloodbank.db.IssuedBloodStockDAO;
 import org.openmrs.module.bloodbank.model.BloodStock;
 import org.openmrs.module.bloodbank.model.BloodStockReceipt;
-
+import org.openmrs.module.bloodbank.model.IssuedBloodStock;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Hibernate implementation of services
  */
-public class HibernateBloodStockReceiptDAO implements BloodStockReceiptDAO {
+public class HibernateIssuedBloodStockDAO implements IssuedBloodStockDAO {
 	
 protected final Log log = LogFactory.getLog(getClass());
 	
@@ -49,49 +51,17 @@ protected final Log log = LogFactory.getLog(getClass());
 		this.sessionFactory = sessionFactory;
 	}
 
-	public BloodStockReceipt saveBloodStockReceipt(BloodStockReceipt bloodStockReceipt) {
-		// TODO Auto-generated method stub
-		return (BloodStockReceipt) sessionFactory.getCurrentSession().merge(bloodStockReceipt);
-	}
-
-	public BloodStockReceipt getBloodStockReceiptFromId(int receiptId) {
+	public List<IssuedBloodStock> listAllIssuedBloodStocks() {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
-				BloodStockReceipt.class);		
-		criteria.add(Restrictions.eq("receiptId", receiptId));
-	
-		return (BloodStockReceipt) criteria.uniqueResult();
-	}
-
-	public Collection<BloodStockReceipt> listAll() {
-		
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
-				BloodStockReceipt.class);		
-		
-		return (Collection<BloodStockReceipt>) criteria.list();
-	}
-
-	public Collection<BloodStockReceipt> searchBloodStockReceipt(
-			String description, Date fromDate, Date toDate) {
-		
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
-				BloodStockReceipt.class);		
-		criteria.add(Restrictions.like("description", "%"+description+"%"));
-		if (fromDate!=null){
-			criteria.add(Restrictions.ge("createdOn", fromDate));
-		}
-		if (toDate!=null){
-			criteria.add(Restrictions.le("createdOn", toDate));
-		}
+				IssuedBloodStock.class);
 		return criteria.list();
 	}
-
-	public void deleteReceipt(BloodStockReceipt receipt) {
+	@Transactional
+	public IssuedBloodStock saveIssuedBloodStock(
+			IssuedBloodStock issuedBloodstock) {
 		
-		sessionFactory.getCurrentSession().delete(receipt);
-		
+		return (IssuedBloodStock) sessionFactory.getCurrentSession().save(issuedBloodstock);
 	}
-
-	
 
 	
 	

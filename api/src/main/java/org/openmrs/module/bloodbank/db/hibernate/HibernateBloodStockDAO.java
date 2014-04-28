@@ -62,6 +62,8 @@ protected final Log log = LogFactory.getLog(getClass());
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				BloodStock.class);		
 		criteria.add(Restrictions.eq("bloodGroupConcept", bloodGroup));
+		criteria.add(Restrictions.ge("expiryDate", new Date()));
+		criteria.add(Restrictions.eq("discarded", Boolean.FALSE));
 		return criteria.list();
 	}
 
@@ -78,6 +80,15 @@ protected final Log log = LogFactory.getLog(getClass());
 				BloodStock.class);	
 		criteria.add(Restrictions.eq("bloodStockId", bloodStockId));
 		return (BloodStock) criteria.uniqueResult();
+	}
+
+	
+
+	public void deleteBloodStocks(Collection<BloodStock> bloodStocks) {
+		for(BloodStock bloodStock : bloodStocks){
+			sessionFactory.getCurrentSession().delete(bloodStock);
+		}
+		
 	}
 	
 	

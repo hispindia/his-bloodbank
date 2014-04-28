@@ -51,4 +51,9 @@ public class BloodStockReceiptServiceImpl implements BloodStockReceiptService{
 	}
 
 
+	public void deleteReceipt(BloodStockReceipt receipt) {
+		 dao.deleteReceipt(receipt);
+	}
+
+
 }

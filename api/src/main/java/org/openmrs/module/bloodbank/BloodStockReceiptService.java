@@ -37,5 +37,7 @@ public interface BloodStockReceiptService {
 
 	public Collection<BloodStockReceipt> searchBloodStockReceipt(
 			String description, Date fromDate, Date toDate);
+
+	public void deleteReceipt(BloodStockReceipt receipt);
 	
 }
