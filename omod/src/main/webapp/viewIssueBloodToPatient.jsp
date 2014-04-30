@@ -25,23 +25,23 @@ SEARCH={
 <b class="boxHeader">Issued Blood Stocks</b> 
 <table class="box"  cellpadding="0" cellspacing="5" >
 	<tr>
-	<th>#</th>
-	<th><spring:message code="bloodbank.patientIdentifier"/></th>
-	<th><spring:message code="bloodbank.patient.name"/></th>
-	<th><spring:message code="bloodbank.patient.age"/></th>
-	<th><spring:message code="bloodbank.patient.gender"/></th>
-	<th><spring:message code="bloodbank.issuedon"/></th>
-	<th><spring:message code="bloodbank.issuedby"/></th>
-	<th></th>
+	<th align="center">#</th>
+	<th align="center"><spring:message code="bloodbank.patientIdentifier"/></th>
+	<th align="center"><spring:message code="bloodbank.patient.name"/></th>
+	<th align="center"><spring:message code="bloodbank.patient.age"/></th>
+	<th align="center"><spring:message code="bloodbank.patient.gender"/></th>
+	<th align="center"><spring:message code="bloodbank.issuedon"/></th>
+	<th align="center"><spring:message code="bloodbank.issuedby"/></th>
+	<th align="center"></th>
 	</tr>
 	<c:choose>
 	<c:when test="${not empty issuedBloodStocks}">
 	<c:forEach items="${issuedBloodStocks}" var="issuedStock" varStatus="varStatus">
 	<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-		<td><c:out value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }"/></td>
-		<td>${issuedStock.patient.patientIdentifier.identifier} </td>	
+		<td align="center"><c:out value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }"/></td>
+		<td align="center">${issuedStock.patient.patientIdentifier.identifier} </td>	
 		<td >${issuedStock.patient.givenName} ${issuedStock.patient.middleName} ${issuedStock.patient.familyName}</td>	
-		<td>	<c:choose>
+		<td align="center">	<c:choose>
                 		<c:when test="${issuedStock.patient.age == 0}"> &lt 1 </c:when>
                 		<c:otherwise >${issuedStock.patient.age}</c:otherwise>
                 	</c:choose>
@@ -55,8 +55,8 @@ SEARCH={
                 	</c:choose>
 				</td>                
 				
-		<td><openmrs:formatDate date="${issuedStock.createdOn}" type="textbox"/></td>
-		<td>${issuedStock.createdBy}</td>
+		<td align="center"><openmrs:formatDate date="${issuedStock.createdOn}" type="textbox"/></td>
+		<td align="center">${issuedStock.createdBy}</td>
 		</tr>
 	</c:forEach>
 	

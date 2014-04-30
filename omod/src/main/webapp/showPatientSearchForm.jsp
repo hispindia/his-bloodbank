@@ -65,10 +65,10 @@ PATIENTSEARCHRESULT = {
 	<table style="width:100%">
 		<tr>
 		
-			<td><b><input type="text" id="bloodbank.patientIdentifier"/></b></td>
-			<td><b><input type="text" id="bloodbank.patient.name"/></b></td>
-			<td><b><input type="text" id="bloodbank.patient.age"/></b></td>
-			<td><b><input type="text" id="bloodbank.patient.gender"/></b></td>			
+			<td><b><spring:message code="bloodbank.patientIdentifier"/></b></td>
+			<td><b><spring:message code="bloodbank.patient.name"/></b></td>
+			<td><b><spring:message code="bloodbank.patient.age"/></b></td>
+			<td><b><spring:message code="bloodbank.patient.gender"/></b></td>			
 	
 			<td><b>Last day of visit</b></td>
 	

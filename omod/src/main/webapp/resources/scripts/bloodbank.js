@@ -4,7 +4,7 @@ BloodBank =
 		issueBlood : function(bloodStockId,patientId){
 			if(SESSION.checkSession()){
 				url = "issueBlood.form?bloodStockId="+bloodStockId+"&patientId="+patientId+"&keepThis=false&TB_iframe=true&height=200&width=450";
-				tb_show("Issue Blood...",url,false);
+				tb_show("Issue Blood",url,false);
 			}
 		
 		},

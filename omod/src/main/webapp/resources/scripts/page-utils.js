@@ -258,7 +258,7 @@ RECEIPT={
 		receiptSlip : function(receiptId){
 					if(SESSION.checkSession()){
 						url = "addBloodStockReceiptDescription.form?receiptId="+receiptId+"&keepThis=false&TB_iframe=true&height=200&width=450";
-						tb_show("Add description for this slip....",url,false);
+						tb_show("Add description for this Slip",url,false);
 					}
 				
 		},

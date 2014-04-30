@@ -1,5 +1,6 @@
 package org.openmrs.module.bloodbank.web.controller.ajax;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -68,7 +69,7 @@ public class AjaxController {
 		BloodStockReceipt bloodStockReceipt =bloodStockReceiptService.getBloodStockReceiptFromId(Integer.parseInt(receiptId));
 		bloodStockReceipt.setDescription(description);
 		bloodStockReceiptService.saveBloodStockreceipt(bloodStockReceipt);
-		model.addAttribute("url", "/module/bloodbank/bloodStockReceipts.form");
+		model.addAttribute("urlAjax", "/module/bloodbank/bloodStockReceipts.form");
 		
 		return "/module/bloodbank/thickbox/success";
 	}
@@ -150,7 +151,7 @@ public class AjaxController {
 		
 		issueBloodStockService.saveIssuedBloodStock(issuedBloodStock);
 		bloodStock.setDiscarded(true);
-		model.addAttribute("url", "/module/bloodbank/viewIssueBloodToPatient.form");
+		model.addAttribute("urlAjax", "/module/bloodbank/viewIssueBloodToPatient.form");
 		
 		return "/module/bloodbank/thickbox/success";
 	}
@@ -162,8 +163,14 @@ public class AjaxController {
 		Concept bloodGroup = Context.getConceptService().getConcept(bloodGroupId);		
 			
 		 Collection<BloodStock> bloodStocks =bloodStockService.getBloodStocksByBloodGroup(bloodGroup);
-			model.addAttribute("bloodStocks", bloodStocks);
+		 Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.DAY_OF_MONTH, 3);
+			model.addAttribute("today", new Date());
+			model.addAttribute("todayPlus3Days", calendar.getTime());
+		
+		 model.addAttribute("bloodStocks", bloodStocks);
 			model.addAttribute("patientId", patientId);
+			
 		 return "/module/bloodbank/availableBloodStockListAjax";
 	}
 

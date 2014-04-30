@@ -25,7 +25,8 @@ VALIDATION={
 
 		if (recieptDate > expiryDate){
 			jQuery('#dateOfReceipt').val("");
-			alert("You can not receipt an expired drug");
+			jQuery('#dateOfExpiry').val("");
+			alert("You can not receipt an expired stock");
 		}
 	}
 }
@@ -97,27 +98,27 @@ VALIDATION={
 <div style="width: 79%; float: right; margin-right: 4px; ">
 <b class="boxHeader">Receipt Slip</b> 
 
-<table class="box" width="100%" border="1" cellpadding="5" cellspacing="0">
+<table class="box" width="100%"  cellpadding="5" cellspacing="0">
 	<tr>
-	<th>#</th>
-	<th><spring:message code="bloodbank.receiveBlood.bloodgroup"/></th>
-	<th><spring:message code="bloodbank.receiveBlood.product"/></th>
-	<th><spring:message code="bloodbank.receiveBlood.dateOfReceipt"/></th>
-	<th><spring:message code="bloodbank.receiveBlood.dateOfExpiry"/></th>
-	<th><spring:message code="bloodbank.receiveBlood.donorName"/></th>
-	<th><spring:message code="bloodbank.receiveBlood.packNo"/></th>
+	<th align="center">#</th>
+	<th align="center"><spring:message code="bloodbank.receiveBlood.bloodgroup"/></th>
+	<th align="center"><spring:message code="bloodbank.receiveBlood.product"/></th>
+	<th align="center"><spring:message code="bloodbank.receiveBlood.dateOfReceipt"/></th>
+	<th align="center"><spring:message code="bloodbank.receiveBlood.dateOfExpiry"/></th>
+	<th align="center"><spring:message code="bloodbank.receiveBlood.donorName"/></th>
+	<th align="center"><spring:message code="bloodbank.receiveBlood.packNo"/></th>
 	</tr>
 	<c:choose>
 	<c:when test="${not empty bloodStocks}">
 	<c:forEach items="${bloodStocks}" var="bloodStock" varStatus="varStatus">
 	<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-		<td><c:out value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }"/></td>
-		<td>${bloodStock.bloodGroupConcept.name} </td>	
-		<td>${bloodStock.product}</td>
-		<td><openmrs:formatDate date="${bloodStock.receiptDate}" type="textbox"/></td>
-		<td><openmrs:formatDate date="${bloodStock.expiryDate}" type="textbox"/></td>
-		<td>${bloodStock.donorName}</td>
-		<td>${bloodStock.packNo}</td>
+		<td align="center"><c:out value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }"/></td>
+		<td align="center">${bloodStock.bloodGroupConcept.name} </td>	
+		<td align="center">${bloodStock.product}</td>
+		<td align="center"><openmrs:formatDate date="${bloodStock.receiptDate}" type="textbox"/></td>
+		<td align="center"><openmrs:formatDate date="${bloodStock.expiryDate}" type="textbox"/></td>
+		<td align="center">${bloodStock.donorName}</td>
+		<td align="center">${bloodStock.packNo}</td>
 	
 		</tr>
 	</c:forEach>
