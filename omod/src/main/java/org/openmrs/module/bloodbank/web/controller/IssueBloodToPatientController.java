@@ -13,6 +13,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.bloodbank.BloodStockReceiptService;
 import org.openmrs.module.bloodbank.BloodStockService;
 import org.openmrs.module.bloodbank.BloodbankConstants;
+import org.openmrs.module.bloodbank.IssuedBloodStockService;
 import org.openmrs.module.bloodbank.model.BloodStock;
 import org.openmrs.module.bloodbank.model.BloodStockReceipt;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,9 @@ public class IssueBloodToPatientController {
 
 	@RequestMapping(value="/module/bloodbank/viewIssueBloodToPatient.form", method = RequestMethod.GET)
 	public String addBloodStockReceiptDescriptionForm(Model model) {
+		IssuedBloodStockService issueBloodStockService = Context.getService(IssuedBloodStockService.class);
 		
+		model.addAttribute("issuedBloodStocks", issueBloodStockService.listAllIssuedBloodStocks());
 		return "/module/bloodbank/viewIssueBloodToPatient";
 	}
 	

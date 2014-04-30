@@ -65,10 +65,10 @@ PATIENTSEARCHRESULT = {
 	<table style="width:100%">
 		<tr>
 		
-			<td><b>Identifier</b></td>
-			<td><b>Name</b></td>
-			<td><b>Age</b></td>
-			<td><b>Gender</b></td>			
+			<td><b><input type="text" id="bloodbank.patientIdentifier"/></b></td>
+			<td><b><input type="text" id="bloodbank.patient.name"/></b></td>
+			<td><b><input type="text" id="bloodbank.patient.age"/></b></td>
+			<td><b><input type="text" id="bloodbank.patient.gender"/></b></td>			
 	
 			<td><b>Last day of visit</b></td>
 	

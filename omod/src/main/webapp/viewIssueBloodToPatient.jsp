@@ -19,35 +19,44 @@ SEARCH={
 </script>
 <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code='bloodbank.issueBlood'/>" onclick="ACT.go('showPatientSearchForm.form');"/>
 <br></br>
-<!-- 
-<div id="searchDiv">
-<spring:message code="bloodbank.description"/><input type="text" id="description"/>
-<spring:message code="bloodbank.receiveBlood.fromDate"/>	<input type="text" id="fromDate" name="fromDate" class="date-pick left" readonly="readonly"  ondblclick="this.value='';"/>
-<spring:message code="bloodbank.receiveBlood.toDate"/>	<input type="text" id="toDate" name="toDate" class="date-pick left" readonly="readonly"  ondblclick="this.value='';"/>
-<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.receiveBlood.search"/>" onclick="SEARCH.search();">
 
-</div><br></br>
 
 <div style="margin-left: 10px; ">
-<b class="boxHeader">Receipt Slip</b> 
+<b class="boxHeader">Issued Blood Stocks</b> 
 <table class="box"  cellpadding="0" cellspacing="5" >
 	<tr>
 	<th>#</th>
-	<th><spring:message code="bloodbank.description"/></th>
-	<th><spring:message code="bloodbank.createdon"/></th>
-	<th><spring:message code="bloodbank.createdby"/></th>
+	<th><spring:message code="bloodbank.patientIdentifier"/></th>
+	<th><spring:message code="bloodbank.patient.name"/></th>
+	<th><spring:message code="bloodbank.patient.age"/></th>
+	<th><spring:message code="bloodbank.patient.gender"/></th>
+	<th><spring:message code="bloodbank.issuedon"/></th>
+	<th><spring:message code="bloodbank.issuedby"/></th>
 	<th></th>
 	</tr>
 	<c:choose>
-	<c:when test="${not empty receipts}">
-	<c:forEach items="${receipts}" var="receipt" varStatus="varStatus">
+	<c:when test="${not empty issuedBloodStocks}">
+	<c:forEach items="${issuedBloodStocks}" var="issuedStock" varStatus="varStatus">
 	<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
 		<td><c:out value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }"/></td>
-		<td>${receipt.description} </td>	
-		<td><openmrs:formatDate date="${receipt.createdOn}" type="textbox"/></td>
-		<td>${receipt.createdBy}</td>
-		<td><a href="showDetailBloodStock.form?receiptId=${receipt.receiptId}"><spring:message code="bloodbank.details"/></a>
+		<td>${issuedStock.patient.patientIdentifier.identifier} </td>	
+		<td >${issuedStock.patient.givenName} ${issuedStock.patient.middleName} ${issuedStock.patient.familyName}</td>	
+		<td>	<c:choose>
+                		<c:when test="${issuedStock.patient.age == 0}"> &lt 1 </c:when>
+                		<c:otherwise >${issuedStock.patient.age}</c:otherwise>
+                	</c:choose>
 		</td>
+		<td >
+					<c:choose>
+                		<c:when test="${issuedStock.patient.gender eq 'M'}">
+							<img src="${pageContext.request.contextPath}/images/male.gif"/>
+						</c:when>
+                		<c:otherwise><img src="${pageContext.request.contextPath}/images/female.gif"/></c:otherwise>
+                	</c:choose>
+				</td>                
+				
+		<td><openmrs:formatDate date="${issuedStock.createdOn}" type="textbox"/></td>
+		<td>${issuedStock.createdBy}</td>
 		</tr>
 	</c:forEach>
 	
@@ -55,5 +64,5 @@ SEARCH={
 	</c:choose>
 </table>
 </div>
--->
+
 <%@ include file="/WEB-INF/template/footer.jsp"%>
