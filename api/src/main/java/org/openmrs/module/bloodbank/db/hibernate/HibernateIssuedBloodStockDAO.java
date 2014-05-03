@@ -23,6 +23,7 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Concept;
+import org.openmrs.Patient;
 import org.openmrs.module.bloodbank.db.BloodStockDAO;
 import org.openmrs.module.bloodbank.db.IssuedBloodStockDAO;
 import org.openmrs.module.bloodbank.model.BloodStock;
@@ -61,6 +62,13 @@ protected final Log log = LogFactory.getLog(getClass());
 			IssuedBloodStock issuedBloodstock) {
 		
 		return (IssuedBloodStock) sessionFactory.getCurrentSession().save(issuedBloodstock);
+	}
+
+	public Collection<IssuedBloodStock> getBloodStockByPatient(Patient patient) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				IssuedBloodStock.class);
+		criteria.add(Restrictions.eq("patient", patient));
+		return criteria.list();
 	}
 
 	

@@ -37,7 +37,7 @@ public class BloodBankHeader extends LinkExt {
 	 */
 	@Override
 	public String getRequiredPrivilege() {
-		return "All Blood Bank";
+		return "Access Blood Bank";
 	}
 
 	/**

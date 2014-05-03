@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.openmrs.Concept;
+import org.openmrs.Patient;
 import org.openmrs.module.bloodbank.model.BloodStock;
 import org.openmrs.module.bloodbank.model.IssuedBloodStock;
 
@@ -12,5 +13,7 @@ public interface IssuedBloodStockDAO {
 	List<IssuedBloodStock> listAllIssuedBloodStocks();
 
 	IssuedBloodStock saveIssuedBloodStock(IssuedBloodStock issuedBloodstock);
+
+	Collection<IssuedBloodStock> getBloodStockByPatient(Patient patient);
 
 }

@@ -25,5 +25,10 @@ public class BloodbankConstants {
 	
 	public static final Integer PAGESIZE = 20;
 
+	public static final int SOON_EXPIRING_DAYS_LIMIT = 5;
+	
+	
+	
+
 }
 

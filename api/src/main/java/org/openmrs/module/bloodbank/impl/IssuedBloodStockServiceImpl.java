@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
+import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.module.bloodbank.BloodStockService;
 import org.openmrs.module.bloodbank.IssuedBloodStockService;
@@ -30,6 +31,10 @@ public class IssuedBloodStockServiceImpl implements IssuedBloodStockService{
 			IssuedBloodStock issuedBloodstock) throws APIException {
 		// TODO Auto-generated method stub
 		return dao.saveIssuedBloodStock(issuedBloodstock);
+	}
+	public Collection<IssuedBloodStock> getBloodStockByPatient(Patient patient) {
+		// TODO Auto-generated method stub
+		return dao.getBloodStockByPatient(patient);
 	}
 	
 	
