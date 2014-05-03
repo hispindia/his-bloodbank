@@ -3,8 +3,18 @@
 <%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="../includes/js_css.jsp" %>
 <%@ include file="../includes/nav.jsp" %>
+
+<openmrs:require privilege="Blood Stock Balance" otherwise="/login.htm" redirect="/module/bloodbank/viewBloodStockBalance.form" />
+
 <script type="text/javascript">
 $(function() {
+	jQuery(document).ready(function() {
+		jQuery("#hyperlink1").toggleClass('');
+		jQuery("#hyperlink2").toggleClass('highlighted');
+		jQuery("#hyperlink3").toggleClass('');
+		jQuery("#hyperlink4").toggleClass('');
+		});
+	
     $( "#tabs" ).tabs({
       beforeLoad: function( event, ui ) {
         ui.jqXHR.error(function() {

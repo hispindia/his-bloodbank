@@ -3,9 +3,14 @@
 <%@ include file="includes/nav.jsp" %>
 
 
+<openmrs:require privilege="Receive Blood" otherwise="/login.htm" redirect="/module/bloodbank/receiveBlood.form" />
+
 <script type="text/javascript">
 jQuery(document).ready(function() {
-	
+	jQuery("#hyperlink1").toggleClass('highlighted');
+	jQuery("#hyperlink2").toggleClass('');
+	jQuery("#hyperlink3").toggleClass('');
+	jQuery("#hyperlink4").toggleClass('');
 });
 SEARCH={
 	search : function() {

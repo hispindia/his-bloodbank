@@ -10,6 +10,12 @@
 <script type="text/javascript">
 jQuery(document).ready(function() {
 	
+	jQuery("#hyperlink1").toggleClass('highlighted');
+	jQuery("#hyperlink2").toggleClass('');
+	jQuery("#hyperlink3").toggleClass('');
+	jQuery("#hyperlink4").toggleClass('');
+	
+	
 	jQuery("#dateOfReceipt").change(function() {
 		VALIDATION.checkRecieptDate();
 	});
@@ -40,9 +46,9 @@ VALIDATION={
 <input hidden type="numeric" id="receiptId" name="receiptId" value = "${receiptId}"  />
 
 <br/>
-<table width="100%">
+<table width="100%" >
  <tr>
-	<td><spring:message code="bloodbank.receiveBlood.bloodgroup"/></td>
+	<td><spring:message code="bloodbank.receiveBlood.bloodgroup"/><em>*</em></td>
 		<td>
 			<select name="bloodGroup" id="bloodGroup"  style="width: 80%;">
 				<option value=""><spring:message code="bloodbank.receiveblood.selectbloodgroup"/></option>

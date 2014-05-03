@@ -1,5 +1,6 @@
 package org.openmrs.module.bloodbank.web.controller.ajax;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -64,7 +65,7 @@ public class AjaxController {
 	@RequestMapping(value="/module/bloodbank/addBloodStockReceiptDescription.form", method = RequestMethod.POST)
 	public String addBloodStockReceiptDescription(@RequestParam(value="receiptId",required=false) String receiptId,
 			@RequestParam(value="description",required=false) String description,Model model) {
-		System.out.println("-=-=-=-=-=-=-=-=-=-=-=->>>"+receiptId);
+		
 		BloodStockReceiptService bloodStockReceiptService = (BloodStockReceiptService) Context.getService(BloodStockReceiptService.class);;
 		BloodStockReceipt bloodStockReceipt =bloodStockReceiptService.getBloodStockReceiptFromId(Integer.parseInt(receiptId));
 		bloodStockReceipt.setDescription(description);
@@ -80,7 +81,7 @@ public class AjaxController {
 		
 			BloodStockReceiptService bloodStockReceiptService = (BloodStockReceiptService) Context.getService(BloodStockReceiptService.class);
 			BloodStockReceipt bloodStockReceipt =bloodStockReceiptService.getBloodStockReceiptFromId(receiptId);
-				 System.out.println("================"+bloodStockReceipt);
+		
 		 Set<BloodStock> bloodStocks =  bloodStockReceipt.getBloodStocks();	
 	
 		model.addAttribute("bloodStocks", bloodStocks);
@@ -150,7 +151,9 @@ public class AjaxController {
 		else issuedBloodStock.setCrossmatchingResult(false);
 		
 		issueBloodStockService.saveIssuedBloodStock(issuedBloodStock);
+		if (crossmatchingResult.equalsIgnoreCase("Positive")){
 		bloodStock.setDiscarded(true);
+		}
 		model.addAttribute("urlAjax", "/module/bloodbank/viewIssueBloodToPatient.form");
 		
 		return "/module/bloodbank/thickbox/success";
@@ -159,14 +162,25 @@ public class AjaxController {
 	public String getBloodStocksByBloodGroup(@RequestParam(value="bloodGroupId",required=false)  String bloodGroupId,
 			@RequestParam(value="patientId",required=false)  String patientId,
 			Model model){
+		PatientService patientService = Context.getService(PatientService.class);
 		BloodStockService bloodStockService = Context.getService(BloodStockService.class);
-		Concept bloodGroup = Context.getConceptService().getConcept(bloodGroupId);		
-			
+		IssuedBloodStockService issuedBloodStockService = Context.getService(IssuedBloodStockService.class);
+		Collection<BloodStock> alreadyTestedBloodStockList = new ArrayList<BloodStock>();
+		Patient patient = patientService.getPatient(Integer.parseInt(patientId));
+		 Collection<IssuedBloodStock> alreadyTestedIssuedBloodStocks = issuedBloodStockService.getBloodStockByPatient(patient);
+		 for (IssuedBloodStock issuedBloodStock : alreadyTestedIssuedBloodStocks){
+			 alreadyTestedBloodStockList.add(issuedBloodStock.getBloodStock());
+			}
+			 
+		Concept bloodGroup = Context.getConceptService().getConcept(bloodGroupId);			
 		 Collection<BloodStock> bloodStocks =bloodStockService.getBloodStocksByBloodGroup(bloodGroup);
+		 bloodStocks.removeAll(alreadyTestedBloodStockList);
+		
+		 System.out.println("already tested="+alreadyTestedIssuedBloodStocks.size());
 		 Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.DAY_OF_MONTH, 3);
+			calendar.add(Calendar.DAY_OF_MONTH, BloodbankConstants.SOON_EXPIRING_DAYS_LIMIT);
 			model.addAttribute("today", new Date());
-			model.addAttribute("todayPlus3Days", calendar.getTime());
+			model.addAttribute("todayPlusXDays", calendar.getTime());
 		
 		 model.addAttribute("bloodStocks", bloodStocks);
 			model.addAttribute("patientId", patientId);

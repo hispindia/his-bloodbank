@@ -19,6 +19,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.annotation.Authorized;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.bloodbank.BloodStockReceiptService;
 import org.openmrs.module.bloodbank.model.BloodStockReceipt;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/module/bloodbank/receiveBlood.form")
+@Authorized("Receive Blood")
 public class BloodBankMainFormController {
 	
 	/** Logger for this class and subclasses */

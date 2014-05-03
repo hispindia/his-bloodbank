@@ -2,10 +2,14 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="includes/nav.jsp" %>
 
+<openmrs:require privilege="Issue Blood" otherwise="/login.htm" redirect="/module/bloodbank/viewExpiredBloodStockBalance.form" />
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
-	
+	jQuery("#hyperlink1").toggleClass('');
+	jQuery("#hyperlink2").toggleClass('');
+	jQuery("#hyperlink3").toggleClass('');
+	jQuery("#hyperlink4").toggleClass('highlighted');
 });
 SEARCH={
 	search : function() {
@@ -32,6 +36,8 @@ SEARCH={
 	<th align="center"><spring:message code="bloodbank.patient.gender"/></th>
 	<th align="center"><spring:message code="bloodbank.issuedon"/></th>
 	<th align="center"><spring:message code="bloodbank.issuedby"/></th>
+	<th align="center"><spring:message code="bloodbank.receiveBlood.bloodgroup"/></th>
+	<th align="center"><spring:message code="bloodbank.receiveBlood.packNo"/></th>
 	<th align="center"></th>
 	</tr>
 	<c:choose>
@@ -40,13 +46,13 @@ SEARCH={
 	<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
 		<td align="center"><c:out value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }"/></td>
 		<td align="center">${issuedStock.patient.patientIdentifier.identifier} </td>	
-		<td >${issuedStock.patient.givenName} ${issuedStock.patient.middleName} ${issuedStock.patient.familyName}</td>	
+		<td align="center">${issuedStock.patient.givenName} ${issuedStock.patient.middleName} ${issuedStock.patient.familyName}</td>	
 		<td align="center">	<c:choose>
                 		<c:when test="${issuedStock.patient.age == 0}"> &lt 1 </c:when>
                 		<c:otherwise >${issuedStock.patient.age}</c:otherwise>
                 	</c:choose>
 		</td>
-		<td >
+		<td align="center">
 					<c:choose>
                 		<c:when test="${issuedStock.patient.gender eq 'M'}">
 							<img src="${pageContext.request.contextPath}/images/male.gif"/>
@@ -57,6 +63,8 @@ SEARCH={
 				
 		<td align="center"><openmrs:formatDate date="${issuedStock.createdOn}" type="textbox"/></td>
 		<td align="center">${issuedStock.createdBy}</td>
+		<td align="center">${bloodGroupConceptMap.get(issuedStock.bloodStock.bloodGroupConcept.toString())}</td>
+		<td align="center">${issuedStock.bloodStock.packNo}</td>
 		</tr>
 	</c:forEach>
 	

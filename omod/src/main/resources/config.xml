@@ -60,13 +60,16 @@
 		<name>Issue Blood</name>
 		<description>Allows user to issue blood</description>
 	</privilege>
+		<privilege>
+		<name>Access Blood Bank</name>
+		<description>Allows user to Access the module</description>
+	</privilege>
+	
+
+	
 	<messages>
 		<lang>en</lang>
 		<file>messages.properties</file>
-	</messages>
-	<messages>
-		<lang>es</lang>
-		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
 	

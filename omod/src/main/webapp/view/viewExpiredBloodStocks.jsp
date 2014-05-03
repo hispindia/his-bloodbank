@@ -4,7 +4,16 @@
 <%@ include file="../includes/js_css.jsp" %>
 <%@ include file="../includes/nav.jsp" %>
 
+
+<openmrs:require privilege="Expired Blood Stock Balance" otherwise="/login.htm" redirect="/module/bloodbank/viewExpiredBloodStockBalance.form" />
 <script type="text/javascript">
+jQuery(document).ready(function() {
+	jQuery("#hyperlink1").toggleClass('');
+	jQuery("#hyperlink2").toggleClass('');
+	jQuery("#hyperlink3").toggleClass('highlighted');
+	jQuery("#hyperlink4").toggleClass('');
+	});
+
 function warning(bloodStockId){
 if(window.confirm("Are you sure?")){
 	ACT.go("discard.form?bloodStockId="+bloodStockId);

@@ -73,11 +73,11 @@ public class ViewBloodStockController {
 		 BloodStockService bloodStockService = Context.getService(BloodStockService.class);
 		 Collection<BloodStock> bloodStocks = bloodStockService.getBloodStocksByBloodGroup(bloodGroupConcept);
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_MONTH, 3);
+		calendar.add(Calendar.DAY_OF_MONTH,BloodbankConstants.SOON_EXPIRING_DAYS_LIMIT);
 		
 		 model.addAttribute("bloodStocks", bloodStocks);
 		model.addAttribute("today", new Date());
-		model.addAttribute("todayPlus3Days", calendar.getTime());
+		model.addAttribute("todayPlusXDays", calendar.getTime());
 		return "/module/bloodbank/view/viewBloodGroupStock";
 	}
 	@RequestMapping(value = "/module/bloodbank/viewExpiredBloodStockBalance.form", method = RequestMethod.GET)

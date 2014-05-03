@@ -7,6 +7,19 @@
 <script type="text/javascript">
 jQuery(document).ready(function() {
 
+	jQuery("#hyperlink1").toggleClass('');
+	jQuery("#hyperlink2").toggleClass('');
+	jQuery("#hyperlink3").toggleClass('');
+	jQuery("#hyperlink4").toggleClass('highlighted');
+	
+	
+	jQuery('input#nameOrId').keypress(function(e) {
+		  if (e.keyCode == '13') 
+		  {
+		   
+		  SEARCH.search();
+		   }
+	});
 		// hover rows
 		jQuery(".patientSearchRow").hover(
 			function(event){					
@@ -59,9 +72,10 @@ PATIENTSEARCHRESULT = {
 </div>
 
 <div style="margin-left: 10px; ">
-<b class="boxHeader">Patient Found</b> 
+
 <c:choose>
 	<c:when test="${not empty patients}" >		
+	<b class="boxHeader">Patient/s Found</b> 
 	<table style="width:100%">
 		<tr>
 		

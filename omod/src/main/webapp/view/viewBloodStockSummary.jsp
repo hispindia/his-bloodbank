@@ -7,14 +7,14 @@
  <c:choose>
 	<c:when test="${not empty bloodGroupStockCount}">
 	<table class="box" width="10%" cellpadding="5" cellspacing="0">
-	<th>#</th>
-	<th><spring:message code="bloodbank.receiveBlood.bloodgroup"/></th>
-	<th><spring:message code="bloodbank.unitsAvailable"/></th>
+	<th align="center">#</th>
+	<th align="center"><spring:message code="bloodbank.receiveBlood.bloodgroup"/></th>
+	<th align="center"><spring:message code="bloodbank.unitsAvailable"/></th>
 	<c:forEach items="${bloodGroupStockCount}" var="bloodGroupStockCountItem" varStatus="varStatus">
 	<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-	<td >${varStatus.index+1}</td>
-	<td >${bloodGroupStockCountItem.key}</td>
-	<td >${bloodGroupStockCountItem.value}</td>
+	<td align="center">${varStatus.index+1}</td>
+	<td align="center">${bloodGroupStockCountItem.key}</td>
+	<td align="center">${bloodGroupStockCountItem.value}</td>
 	</tr>
 	
 	</c:forEach>	

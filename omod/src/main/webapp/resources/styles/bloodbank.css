@@ -12,3 +12,7 @@ tr.expired{
 	background:#FFAEAE;
 	
 }
+a.highlighted{
+  color: #ddd;
+  text-decoration: none;
+}

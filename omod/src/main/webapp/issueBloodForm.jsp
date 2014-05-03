@@ -2,6 +2,19 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/headerMinimal.jsp" %>
 <%@ include file="includes/js_css.jsp" %>
+
+<script type="text/javascript">
+function issuePrompt(){
+
+var result = jQuery('#result:checked').val();
+
+	if (result == 'Negative'){
+		alert("Result-Negative : Blood will NOT be issued to the patient!!");
+	}else if (result == 'Positive'){
+		
+	}
+}
+</script>
 <form method="post" id="issueBloodForm">
 <table class="box" width="100%">
 	
@@ -17,7 +30,7 @@
 			
 	</tr>
 	<tr>
-		<td colspan="2"><input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.issue" />"></td>
+		<td colspan="2"><input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" onclick = "issuePrompt();" value="<spring:message code="bloodbank.submit"/>" </td>
 	</tr>
 </table>
 </form>
