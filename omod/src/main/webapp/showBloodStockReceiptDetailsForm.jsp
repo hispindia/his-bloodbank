@@ -18,7 +18,7 @@ jQuery(document).ready(function() {
 <div id="printDiv" style="width: 79%;  ">
 <b class="boxHeader">Receipt Slip-${receiptId}</b> 
 
-<table class="box" width="100%" border="1" cellpadding="5" cellspacing="0">
+<table class="box" width="100%"  cellpadding="5" cellspacing="0">
 	<tr>
 	<th align="center">#</th>
 	<th align="center"><spring:message code="bloodbank.receiveBlood.bloodgroup"/></th>

@@ -9,7 +9,7 @@ function issuePrompt(){
 var result = jQuery('#result:checked').val();
 
 	if (result == 'Negative'){
-		alert("Result-Negative : Blood will NOT be issued to the patient!!");
+		alert("Result-Negative : Blood will NOT be issued to the patient.");
 	}else if (result == 'Positive'){
 		
 	}
