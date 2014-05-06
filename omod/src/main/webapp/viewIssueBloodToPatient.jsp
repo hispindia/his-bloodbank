@@ -63,7 +63,7 @@ SEARCH={
 				
 		<td align="center"><openmrs:formatDate date="${issuedStock.createdOn}" type="textbox"/></td>
 		<td align="center">${issuedStock.createdBy}</td>
-		<td align="center">${bloodGroupConceptMap.get(issuedStock.bloodStock.bloodGroupConcept.toString())}</td>
+		<td align="center">${issuedStock.bloodStock.bloodGroupConcept.displayString}</td>
 		<td align="center">${issuedStock.bloodStock.packNo}</td>
 		</tr>
 	</c:forEach>

@@ -27,7 +27,6 @@ public class IssueBloodToPatientController {
 
 	@RequestMapping(value="/module/bloodbank/viewIssueBloodToPatient.form", method = RequestMethod.GET)
 	public String addBloodStockReceiptDescriptionForm(Model model) {
-		Map<String,String> bloodGroupConceptMap = new HashMap<String,String>();
 		IssuedBloodStockService issueBloodStockService = Context.getService(IssuedBloodStockService.class);
 		Integer bloodGroupContainerConceptId = Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
 				BloodbankConstants.BLOODGROUPS_CONCEPT_ID));
@@ -35,13 +34,7 @@ public class IssueBloodToPatientController {
 		 Concept bloodGroupContainerConcept = Context.getConceptService().getConcept(bloodGroupContainerConceptId);
 			
 		 Collection<ConceptAnswer> bloodGroups =  bloodGroupContainerConcept.getAnswers();
-	
-		 for (ConceptAnswer ca : bloodGroups){
-			 bloodGroupConceptMap.put(ca.getAnswerConcept().getId()+"", ca.getAnswerConcept().getDisplayString());
-		 }
-		
 		model.addAttribute("issuedBloodStocks", issueBloodStockService.listAllIssuedBloodStocks());
-		model.addAttribute("bloodGroupConceptMap", bloodGroupConceptMap);
 		return "/module/bloodbank/viewIssueBloodToPatient";
 	}
 	
