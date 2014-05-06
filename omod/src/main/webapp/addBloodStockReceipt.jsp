@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
-	jQuery('#dateOfReceipt').datepicker({ maxDate: new Date() });
+	jQuery('#dateOfReceipt').datepicker({ maxDate: new Date() ,dateFormat: 'dd/mm/yy'});
 	
 	jQuery("#hyperlink1").toggleClass('highlighted');
 	jQuery("#hyperlink2").toggleClass('');
@@ -47,7 +47,7 @@ VALIDATION={
 <input hidden type="numeric" id="receiptId" name="receiptId" value = "${receiptId}"  />
 
 <br/>
-<table width="100%" >
+<table width="100%" cellpadding="5" cellspacing="0" >
  <tr>
 	<td><spring:message code="bloodbank.receiveBlood.bloodgroup"/><em>*</em></td>
 		<td>
