@@ -9,6 +9,7 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
+	jQuery('#dateOfReceipt').datepicker({ maxDate: new Date() });
 	
 	jQuery("#hyperlink1").toggleClass('highlighted');
 	jQuery("#hyperlink2").toggleClass('');
@@ -29,7 +30,7 @@ VALIDATION={
 		var recieptDate = new Date(STRING.convertDateFormat(jQuery('#dateOfReceipt').val()));
 		var expiryDate = new Date(STRING.convertDateFormat(jQuery('#dateOfExpiry').val()));
 
-		if (recieptDate > expiryDate){
+		if (recieptDate >= expiryDate){
 			jQuery('#dateOfReceipt').val("");
 			jQuery('#dateOfExpiry').val("");
 			alert("You can not receipt an expired stock");
@@ -68,7 +69,7 @@ VALIDATION={
 	<tr>
 		<td><spring:message code="bloodbank.receiveBlood.dateOfReceipt"/><em>*</em></td>
 		<td>
-			<input type="text" id="dateOfReceipt" name="dateOfReceipt" class="date-pick left" readonly="readonly"  ondblclick="this.value='';"/>
+			<input type="text" id="dateOfReceipt" name="dateOfReceipt" readonly="readonly"  ondblclick="this.value='';"/>
 		</td>
 	</tr>
 	

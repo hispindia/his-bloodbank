@@ -38,7 +38,7 @@ SEARCH={
 <table class="box"  cellpadding="0" cellspacing="5" >
 	<tr>
 	<th align="center">#</th>
-	<th align="center"><spring:message code="bloodbank.description"/></th>
+	<th ><spring:message code="bloodbank.description"/></th>
 	<th align="center"><spring:message code="bloodbank.createdon"/></th>
 	<th align="center"><spring:message code="bloodbank.createdby"/></th>
 	<th></th>
@@ -48,7 +48,7 @@ SEARCH={
 	<c:forEach items="${receipts}" var="receipt" varStatus="varStatus">
 	<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
 		<td align="center"><c:out value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }"/></td>
-		<td align="center">${receipt.description} </td>	
+		<td >${receipt.description} </td>	
 		<td align="center"><openmrs:formatDate date="${receipt.createdOn}" type="textbox"/></td>
 		<td align="center">${receipt.createdBy}</td>
 		<td align="center"><a href="showDetailBloodStock.form?receiptId=${receipt.receiptId}"><spring:message code="bloodbank.details"/></a>

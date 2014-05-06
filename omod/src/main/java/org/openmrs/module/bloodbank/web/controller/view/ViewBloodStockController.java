@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,7 +43,7 @@ public class ViewBloodStockController {
 	
 	@RequestMapping(value = "/module/bloodbank/bloodStockSummary.form", method = RequestMethod.GET)
 	public String viewBloodStockSummary(HttpServletRequest request,Model model) {
-		Map<String,Integer> bloodGroupStockCount = new HashMap<String,Integer>();
+		Map<String,Integer> bloodGroupStockCount = new LinkedHashMap<String,Integer>();
 		Integer bloodGroupContainerConceptId = Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
 				BloodbankConstants.BLOODGROUPS_CONCEPT_ID));
 		
