@@ -61,13 +61,6 @@ public void setBloodStock(BloodStock bloodStock) {
 	this.bloodStock = bloodStock;
 }
 
-public boolean isCrossmatchingResult() {
-	return crossmatchingResult;
-}
-
-public void setCrossmatchingResult(boolean crossmatchingResult) {
-	this.crossmatchingResult = crossmatchingResult;
-}
 public Patient getPatient() {
 	return patient;
 }
@@ -98,6 +91,14 @@ public User getCreatedBy() {
 
 public void setCreatedBy(User createdBy) {
 	this.createdBy = createdBy;
+}
+
+public boolean isCrossmatchingResult() {
+	return crossmatchingResult;
+}
+
+public void setCrossmatchingResult(boolean crossmatchingResult) {
+	this.crossmatchingResult = crossmatchingResult;
 }
 
 }

@@ -55,6 +55,7 @@ protected final Log log = LogFactory.getLog(getClass());
 	public List<IssuedBloodStock> listAllIssuedBloodStocks() {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				IssuedBloodStock.class);
+		criteria.add(Restrictions.eq("crossmatchingResult", Boolean.TRUE));
 		return criteria.list();
 	}
 	@Transactional
