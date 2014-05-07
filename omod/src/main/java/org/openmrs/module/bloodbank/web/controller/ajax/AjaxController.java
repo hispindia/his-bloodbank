@@ -24,6 +24,7 @@ import org.openmrs.module.bloodbank.IssuedBloodStockService;
 import org.openmrs.module.bloodbank.model.BloodStock;
 import org.openmrs.module.bloodbank.model.BloodStockReceipt;
 import org.openmrs.module.bloodbank.model.IssuedBloodStock;
+import org.openmrs.module.bloodbank.util.DateUtils;
 import org.openmrs.reporting.PatientSearch;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,8 +48,22 @@ public class AjaxController {
 		return "/module/bloodbank/session/checkSession";
 	}
 	@RequestMapping(value="/module/bloodbank/addBloodStockReceiptDescription.form", method = RequestMethod.GET)
-	public String addBloodStockReceiptDescriptionForm(@RequestParam(value="receiptId",required=false) String receiptId,Model model) {
-		model.addAttribute("receiptId", receiptId);	
+	public String addBloodStockReceiptDescriptionForm(HttpServletRequest request,Model model) {
+		int total = Integer.parseInt(request.getParameter("total"));
+		Map requestMap = request.getParameterMap();
+		/*for (int i=1;i<total;i++){
+			String bloodGroup = request.getParameter("bloodGroup_"+i);
+			String product = request.getParameter("product_"+i);
+			String bloodGroup = request.getParameter("bloodGroup");
+			String bloodGroup = request.getParameter("bloodGroup");
+			String bloodGroup = request.getParameter("bloodGroup");
+			String bloodGroup = request.getParameter("bloodGroup");
+			String bloodGroup = request.getParameter("bloodGroup");
+			
+		}
+		*/
+		model.addAttribute("requestMap", requestMap);
+		
 		return "/module/bloodbank/addBloodStockReceiptDescriptionForm";
 	}
 	
@@ -64,11 +79,44 @@ public class AjaxController {
 	
 	@RequestMapping(value="/module/bloodbank/addBloodStockReceiptDescription.form", method = RequestMethod.POST)
 	public String addBloodStockReceiptDescription(@RequestParam(value="receiptId",required=false) String receiptId,
-			@RequestParam(value="description",required=false) String description,Model model) {
+			@RequestParam(value="description",required=false) String description,HttpServletRequest request,Model model) {
+		int total = Integer.parseInt(request.getParameter("total"));
+		BloodStockReceiptService bloodStockReceiptService = (BloodStockReceiptService) Context.getService(BloodStockReceiptService.class);
+		BloodStockReceipt bloodStockReceipt= new BloodStockReceipt();
+		bloodStockReceipt.setCreatedBy(Context.getAuthenticatedUser());
+		bloodStockReceipt.setCreatedOn(new Date());
+	
+		bloodStockReceipt=bloodStockReceiptService.saveBloodStockreceipt(bloodStockReceipt);
 		
-		BloodStockReceiptService bloodStockReceiptService = (BloodStockReceiptService) Context.getService(BloodStockReceiptService.class);;
-		BloodStockReceipt bloodStockReceipt =bloodStockReceiptService.getBloodStockReceiptFromId(Integer.parseInt(receiptId));
+		
+		for (int i=1;i<=total;i++){
+			int bloodGroupId = Integer.parseInt(request.getParameter("bloodGroup_"+i));
+			String product = request.getParameter("product_"+i);
+			String dateOfReceipt = request.getParameter("dateOfReceipt_"+i);
+			String dateOfExpiry = request.getParameter("dateOfExpiry_"+i);
+			String donorName = request.getParameter("donorName_"+i);
+			String packNo = request.getParameter("packNo_"+i);
+
+			Concept bloodGroupConcept =Context.getConceptService().getConcept(bloodGroupId);
+			BloodStockService bloodStockService = (BloodStockService) Context.getService(BloodStockService.class);
+
+			BloodStock bloodStock = new BloodStock();
+			bloodStock.setBloodGroupConcept(bloodGroupConcept);
+			bloodStock.setPackNo(packNo);
+			bloodStock.setProduct(product);
+			bloodStock.setDonorName(donorName);
+			bloodStock.setReceiptDate(DateUtils.getDateFromStr(dateOfReceipt));
+			bloodStock.setExpiryDate(DateUtils.getDateFromStr(dateOfExpiry));
+			bloodStock.setDiscarded(false);
+			
+			// saving bloodstock + getting the saved instance back
+			bloodStock = bloodStockService.saveBloodStock(bloodStock);
+			
+			bloodStockReceipt.getBloodStocks().add(bloodStock);
+			
+		}
 		bloodStockReceipt.setDescription(description);
+		
 		bloodStockReceiptService.saveBloodStockreceipt(bloodStockReceipt);
 		model.addAttribute("urlAjax", "/module/bloodbank/bloodStockReceipts.form");
 		
@@ -145,11 +193,12 @@ public class AjaxController {
 		issuedBloodStock.setCreatedBy(Context.getAuthenticatedUser());
 		issuedBloodStock.setComment(comment);
 		issuedBloodStock.setCreatedOn(new Date());
-		
-		if (crossmatchingResult.equalsIgnoreCase("Positive"))
-			issuedBloodStock.setCrossmatchingResult(true);
-		else issuedBloodStock.setCrossmatchingResult(false);
-		
+		if (crossmatchingResult.equalsIgnoreCase("Positive")){
+		issuedBloodStock.setCrossmatchingResult(true);
+		}else{
+			issuedBloodStock.setCrossmatchingResult(false);
+				
+		}
 		issueBloodStockService.saveIssuedBloodStock(issuedBloodStock);
 		if (crossmatchingResult.equalsIgnoreCase("Positive")){
 		bloodStock.setDiscarded(true);

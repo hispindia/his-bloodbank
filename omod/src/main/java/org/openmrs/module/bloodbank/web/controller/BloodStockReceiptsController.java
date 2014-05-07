@@ -74,7 +74,20 @@ public class BloodStockReceiptsController {
 
 	@RequestMapping(method=RequestMethod.POST)
 	public String addBloodStock(HttpServletRequest request,Model model){
-		Integer bloodGroupConceptId = Integer.parseInt(request.getParameter("bloodGroup"));
+		int totalStocks = Integer.parseInt(request.getParameter("totalStocks"));
+		
+		System.out.println(totalStocks+"|||||------------||||");
+		for(int count=1;count<totalStocks;count++){
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		/* Integer bloodGroupConceptId = Integer.parseInt(request.getParameter("bloodGroup"));
 			// get concept from id
 			Concept bloodGroupConcept =Context.getConceptService().getConcept(bloodGroupConceptId);
 		String product = request.getParameter("product");
@@ -123,7 +136,7 @@ public class BloodStockReceiptsController {
 		
 		// saving receipt + getting saved instance back
 		bloodStockReceipt = bloodStockReceiptService.saveBloodStockreceipt(bloodStockReceipt);
-		
-		return "redirect:/module/bloodbank/bloodStockReceipts.form?receiptId="+bloodStockReceipt.getReceiptId();
+	*/	
+		return "redirect:/module/bloodbank/bloodStockReceipts.form?receiptId=";
 	}
 	}

@@ -31,9 +31,9 @@ var EVT =
 var CHECK = 
 {
 
-	receiptBloodStockReceipt : function()
+	receiptBloodStockReceiptInput : function()
 	{
-		var validator = jQuery("#receiptBloodStockReceipt").validate(
+		var validator = jQuery("#receiptBloodStockReceiptInput").validate(
 				{
 					event : "blur",
 					rules : 

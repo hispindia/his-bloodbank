@@ -9,6 +9,8 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
+	jQuery("#resultTable").hide();
+
 	jQuery('#dateOfReceipt').datepicker({ maxDate: new Date() ,dateFormat: 'dd/mm/yy'});
 	
 	jQuery("#hyperlink1").toggleClass('highlighted');
@@ -24,8 +26,39 @@ jQuery(document).ready(function() {
 		VALIDATION.checkRecieptDate();
 	});
 	});
-
+APPEND = {
+		
+		moveStock : function(){
+		
+			if(jQuery("#receiptBloodStockReceiptInput").valid() == true){
+		var tableLength = jQuery('#receiptTable tr').length;
+		var bloodGroup = 	jQuery('#bloodGroup').val();
+		var bloodGroupName = jQuery('#bloodGroup').children(':selected').text();
+		var product = 	jQuery('#product').val();
+		var dateOfReceipt = 	jQuery('#dateOfReceipt').val();
+		var dateOfExpiry = 	jQuery('#dateOfExpiry').val();
+		var donorName = 	jQuery('#donorName').val();
+		var packNo = 	jQuery('#packNo').val();
+			if (tableLength%2==0){
+			jQuery('#receiptTable').append('<tr class="evenRow" id=\''+bloodGroup+'\'><td align="center">'+tableLength+'</td><td align="center">'+bloodGroupName+'</td><td align="center">'+product+'</td><td align="center">'+dateOfReceipt+'</td><td align="center">'+dateOfExpiry+'</td><td align="center">'+donorName+'</td><td align="center">'+packNo+'</td></tr>');
+			}else{
+			jQuery('#receiptTable').append('<tr class="oddRow" id=\''+bloodGroup+'\'><td align="center">'+tableLength+'</td><td align="center">'+bloodGroupName+'</td><td align="center">'+product+'</td><td align="center">'+dateOfReceipt+'</td><td align="center">'+dateOfExpiry+'</td><td align="center">'+donorName+'</td><td align="center">'+packNo+'</td></tr>');
+			}
+			jQuery('#hiddenDiv').append('<input hidden type="text" id=bloodGroup_'+tableLength+' value='+bloodGroup+'/>');
+			jQuery('#hiddenDiv').append('<input hidden type="text" id=product_'+tableLength+' value='+product+'/>');
+			jQuery('#hiddenDiv').append('<input hidden type="text" id=dateOfReceipt_'+tableLength+' value='+dateOfReceipt+'/>');
+			jQuery('#hiddenDiv').append('<input hidden type="text" id=dateOfExpiry_'+tableLength+' value='+dateOfExpiry+'/>');
+			jQuery('#hiddenDiv').append('<input hidden type="text" id=donorName_'+tableLength+' value='+donorName+'/>');
+			jQuery('#hiddenDiv').append('<input hidden type="text" id=packNo_'+tableLength+' value='+packNo+'/>');
+			jQuery('#totalStocks').val(tableLength);
+		
+			jQuery("#resultTable").show();
+			}
+		}
+}
 VALIDATION={
+
+	
 	checkRecieptDate : function() {
 		var recieptDate = new Date(STRING.convertDateFormat(jQuery('#dateOfReceipt').val()));
 		var expiryDate = new Date(STRING.convertDateFormat(jQuery('#dateOfExpiry').val()));
@@ -39,11 +72,10 @@ VALIDATION={
 }
 
 </script>
-
+<form method="post" id="receiptBloodStockReceiptInput">
 <div style="width: 20%; float: left; margin-left: 4px; ">
 <b class="boxHeader"><spring:message code="bloodbank.receiveBlood.add"/></b>
 <div class="box">
-<form method="post" id="receiptBloodStockReceipt">
 <input hidden type="numeric" id="receiptId" name="receiptId" value = "${receiptId}"  />
 
 <br/>
@@ -54,7 +86,7 @@ VALIDATION={
 			<select name="bloodGroup" id="bloodGroup"  style="width: 80%;">
 				<option value=""><spring:message code="bloodbank.receiveblood.selectbloodgroup"/></option>
                 <c:forEach items="${bloodGroups}" var="bloodGroup">
-                    <option value="${bloodGroup.answerConcept.id}" title="${bloodGroup.answerConcept.id}">${bloodGroup.answerConcept.name}</option>
+                    <option name="${bloodGroup.answerConcept.name}" value="${bloodGroup.answerConcept.id}" title="${bloodGroup.answerConcept.id}">${bloodGroup.answerConcept.name}</option>
                 </c:forEach>
   			</select>
 	</td>	
@@ -96,16 +128,19 @@ VALIDATION={
 	
 </table>
 <br/>
-<input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.receiveblood.addToSlip"/>">
+<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.receiveblood.addToSlip"/>" onclick = "APPEND.moveStock();">
 <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.back"/>" onclick="BloodBank.clearBloodReceipt(${receiptId});">
+
+</div>
+</div>
 </form>
-</div>
-</div>
 <!-- Receipt list -->
+<form method="post" id="receiptBloodStockReceipt">
 <div style="width: 79%; float: right; margin-right: 4px; ">
 <b class="boxHeader">Receipt Slip</b> 
 
-<table class="box" width="100%"  cellpadding="5" cellspacing="0">
+
+<table id="receiptTable" class="box" width="100%"  cellpadding="5" cellspacing="0">
 	<tr>
 	<th align="center">#</th>
 	<th align="center"><spring:message code="bloodbank.receiveBlood.bloodgroup"/></th>
@@ -115,35 +150,19 @@ VALIDATION={
 	<th align="center"><spring:message code="bloodbank.receiveBlood.donorName"/></th>
 	<th align="center"><spring:message code="bloodbank.receiveBlood.packNo"/></th>
 	</tr>
-	<c:choose>
-	<c:when test="${not empty bloodStocks}">
-	<c:forEach items="${bloodStocks}" var="bloodStock" varStatus="varStatus">
-	<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-		<td align="center"><c:out value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }"/></td>
-		<td align="center">${bloodStock.bloodGroupConcept.name} </td>	
-		<td align="center">${bloodStock.product}</td>
-		<td align="center"><openmrs:formatDate date="${bloodStock.receiptDate}" type="textbox"/></td>
-		<td align="center"><openmrs:formatDate date="${bloodStock.expiryDate}" type="textbox"/></td>
-		<td align="center">${bloodStock.donorName}</td>
-		<td align="center">${bloodStock.packNo}</td>
-	
-		</tr>
-	</c:forEach>
-	
-	</c:when>
-	</c:choose>
 </table>
+<div id="hiddenDiv">
+<input hidden type="text" id="totalStocks" name="totalStocks"  />
+</div>
 <br/>
-	<c:if  test="${not empty bloodStocks}">
-		<table class="box" width="100%" cellpadding="5" cellspacing="0">
+		<table id="resultTable" class="box" width="100%" cellpadding="5" cellspacing="0">
 		<td>
-				<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.receiveblood.finish"/>" onclick="RECEIPT.receiptSlip(${receiptId});" />
+				<input  type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.receiveblood.finish"/>" onclick="RECEIPT.receiptSlip(${receiptId});" />
 			<!-- 	<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.receiveblood.clear"/>"  onclick="RECEIPT.receiptSlip('1');"/>
 				<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="bloodbank.receiveblood.print"/>" onClick="RECEIPT.printDiv();" />
 		-->	</td>
 		</tr>
 		</table>
-	</c:if>
 </div>
- 
+ </form>
 <%@ include file="/WEB-INF/template/footer.jsp" %>

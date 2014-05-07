@@ -12,6 +12,8 @@
 	</composite-id>
 		<property name="comment" column="comment" />
 		<property name="createdOn" column="created_on"  type="java.util.Date" />
+		<property name="crossmatchingResult" column="crossmatching_result" type="boolean" />
+		
 		<many-to-one name="createdBy" column="created_by"  class="org.openmrs.User"/>
 		
 	</class>
