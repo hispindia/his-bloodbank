@@ -45,7 +45,7 @@ public class BloodBankHeader extends LinkExt {
 	 */
 	@Override
 	public String getLabel() {
-		return "bloodbank.title";
+		return "Blood Bank";
 	}
 
 	/** 
