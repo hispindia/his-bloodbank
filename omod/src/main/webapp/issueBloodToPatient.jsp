@@ -16,7 +16,7 @@ jQuery(document).ready(function() {
 
 </script>
 	
-	<b><spring:message code="bloodbank.issueBloodToPatient.patientName"/></b> 		${patient.givenName} ${patient.middleName} ${patient.familyName}<br/>
+	<b><spring:message code="bloodbank.issueBloodToPatient.patientName"/></b> 		${patient.givenName}  ${patient.familyName} ${fn:replace(patient.middleName,","," ")}<br/>
 	<b><spring:message code="bloodbank.issueBloodToPatient.patientID"/>	</b>	${patient.patientIdentifier.identifier}<br/>
 	<b><spring:message code="bloodbank.issueBloodToPatient.patientAge"/></b>		
 					<c:choose>

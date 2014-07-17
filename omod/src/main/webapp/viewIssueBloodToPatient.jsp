@@ -46,7 +46,7 @@ SEARCH={
 	<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
 		<td align="center"><c:out value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }"/></td>
 		<td align="center">${issuedStock.patient.patientIdentifier.identifier} </td>	
-		<td align="center">${issuedStock.patient.givenName} ${issuedStock.patient.middleName} ${issuedStock.patient.familyName}</td>	
+		<td align="center">${issuedStock.patient.givenName}  ${issuedStock.patient.familyName} ${fn:replace(issuedStock.patient.middleName,","," ")}</td>	
 		<td align="center">	<c:choose>
                 		<c:when test="${issuedStock.patient.age == 0}"> &lt 1 </c:when>
                 		<c:otherwise >${issuedStock.patient.age}</c:otherwise>
