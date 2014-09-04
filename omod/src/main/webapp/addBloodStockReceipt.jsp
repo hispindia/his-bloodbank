@@ -13,7 +13,7 @@ jQuery(document).ready(function() {
 
 	jQuery('#dateOfReceipt').datepicker({ maxDate: new Date() ,dateFormat: 'dd/mm/yy'});
 	
-	jQuery("#hyperlink1").toggleClass('highlighted');
+	jQuery("#hyperlink1").toggleClass('');
 	jQuery("#hyperlink2").toggleClass('');
 	jQuery("#hyperlink3").toggleClass('');
 	jQuery("#hyperlink4").toggleClass('');
@@ -45,10 +45,13 @@ APPEND = {
 			jQuery('#receiptTable').append('<tr class="oddRow" id=\''+bloodGroup+'\'><td align="center">'+tableLength+'</td><td align="center">'+bloodGroupName+'</td><td align="center">'+product+'</td><td align="center">'+dateOfReceipt+'</td><td align="center">'+dateOfExpiry+'</td><td align="center">'+donorName+'</td><td align="center">'+packNo+'</td></tr>');
 			}
 			jQuery('#hiddenDiv').append('<input hidden type="text" id=bloodGroup_'+tableLength+' value='+bloodGroup+' />');
+			product=product.replace(" ","_");
 			jQuery('#hiddenDiv').append('<input hidden type="text" id=product_'+tableLength+' value='+product+' />');
 			jQuery('#hiddenDiv').append('<input hidden type="text" id=dateOfReceipt_'+tableLength+' value='+dateOfReceipt+' />');
 			jQuery('#hiddenDiv').append('<input hidden type="text" id=dateOfExpiry_'+tableLength+' value='+dateOfExpiry+' />');
+			donorName=donorName.replace(" ","_");
 			jQuery('#hiddenDiv').append('<input hidden type="text" id=donorName_'+tableLength+' value='+donorName+' />');
+			packNo=packNo.replace(" ","_");
 			jQuery('#hiddenDiv').append('<input hidden type="text" id=packNo_'+tableLength+' value='+packNo+' />');
 			jQuery('#totalStocks').val(tableLength);
 		

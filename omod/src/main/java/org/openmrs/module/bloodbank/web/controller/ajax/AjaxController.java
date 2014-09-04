@@ -92,11 +92,14 @@ public class AjaxController {
 		for (int i=1;i<=total;i++){
 			int bloodGroupId = Integer.parseInt(request.getParameter("bloodGroup_"+i));
 			String product = request.getParameter("product_"+i);
+			product=product.replace("_", " ");
 			String dateOfReceipt = request.getParameter("dateOfReceipt_"+i);
 			String dateOfExpiry = request.getParameter("dateOfExpiry_"+i);
 			String donorName = request.getParameter("donorName_"+i);
+			donorName=donorName.replace("_", " ");
 			String packNo = request.getParameter("packNo_"+i);
-
+			packNo=packNo.replace("_", " ");
+			
 			Concept bloodGroupConcept =Context.getConceptService().getConcept(bloodGroupId);
 			BloodStockService bloodStockService = (BloodStockService) Context.getService(BloodStockService.class);
 

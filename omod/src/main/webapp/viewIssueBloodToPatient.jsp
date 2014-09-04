@@ -9,7 +9,7 @@ jQuery(document).ready(function() {
 	jQuery("#hyperlink1").toggleClass('');
 	jQuery("#hyperlink2").toggleClass('');
 	jQuery("#hyperlink3").toggleClass('');
-	jQuery("#hyperlink4").toggleClass('highlighted');
+	jQuery("#hyperlink4").toggleClass('');
 });
 SEARCH={
 	search : function() {
