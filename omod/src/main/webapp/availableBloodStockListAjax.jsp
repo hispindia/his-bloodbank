@@ -21,7 +21,7 @@
 		<td align="center"><openmrs:formatDate date="${bloodStock.expiryDate}" type="textbox"/></td>
 		<td align="center">${bloodStock.donorName}</td>
 		<td align="center">${bloodStock.packNo}</td>
-		<td align="center"><a href="#" onclick="BloodBank.issueBlood(${bloodStock.bloodStockId},${patientId});"><spring:message code="bloodbank.issue"/></a></td>
+		<td align="center"><a href="#" onclick="BloodBank.issueBlood(${bloodStock.bloodStockId},${patientId});">Issue</a></td>
 	
 		</tr>
 	</c:forEach>
