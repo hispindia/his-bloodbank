@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>bloodbank</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3</version>
 	</parent>
 	<artifactId>bloodbank-omod</artifactId>
 	<packaging>omod</packaging>
@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>hospitalcore-api</artifactId>
-			<version>1.5.1</version>
+			<version>1.5.2</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Apache Commons Upload -->
